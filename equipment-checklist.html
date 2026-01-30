@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vehicle/Heavy Equipment Pre-Use Inspection</title>
+  <style>
+    :root { --bg:#0b0c10; --card:#14161d; --ink:#e9eef5; --muted:#a9b3c1; --line:#2a2f3a; --accent:#7dd3fc; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--ink); }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 18px; }
+    .row { display: grid; gap: 14px; }
+    @media (min-width: 980px) { .row { grid-template-columns: 1.2fr 0.8fr; } }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
+    h1 { font-size: 18px; margin: 0 0 10px; }
+    h2 { font-size: 14px; margin: 0 0 10px; color: var(--muted); font-weight: 600; letter-spacing: .02em; text-transform: uppercase; }
+    label { display:block; font-size: 12px; color: var(--muted); margin: 10px 0 6px; }
+    input[type="text"], input[type="date"], input[type="time"], textarea, select {
+      width: 100%; padding: 10px 10px; border-radius: 10px;
+      border: 1px solid var(--line); background: #0f1117; color: var(--ink);
+      outline: none;
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    .grid2 { display:grid; gap: 10px; }
+    @media (min-width: 680px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+    .grid3 { display:grid; gap: 10px; }
+    @media (min-width: 680px) { .grid3 { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .items { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 12px; }
+    .item { display:grid; grid-template-columns: 1fr auto; gap: 10px; padding: 10px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }
+    .item .desc { font-size: 13px; line-height: 1.25rem; }
+    .yn { display:flex; gap: 10px; align-items:center; }
+    .yn label { margin: 0; font-size: 12px; color: var(--ink); }
+    .yn input { transform: translateY(1px); }
+    .btns { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    button {
+      padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line);
+      background: #0f1117; color: var(--ink); cursor: pointer;
+    }
+    button.primary { border-color: #2b6a86; background: rgba(125, 211, 252, .12); }
+    button:hover { filter: brightness(1.08); }
+    .note { font-size: 12px; color: var(--muted); line-height: 1.2rem; }
+    iframe { width: 100%; height: 520px; border: 1px solid var(--line); border-radius: 12px; background:#0f1117; }
+    .small { font-size: 11px; color: var(--muted); }
+    .pill { display:inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <h1>Vehicle/Heavy Equipment Pre-Use Inspection Checklist <span class="pill">Email Submit</span></h1>
+
+    <div class="row">
+      <div class="card">
+        <h2>General equipment information</h2>
+
+        <div class="grid2">
+          <div>
+            <label>Incident Name / No.</label>
+            <input type="text" name="incidentName" />
+          </div>
+          <div>
+            <label>Resource Order No.</label>
+            <input type="text" name="resourceOrder" />
+          </div>
+          <div>
+            <label>Contractor Name</label>
+            <input type="text" name="contractorName" />
+          </div>
+          <div>
+            <label>Agreement No.</label>
+            <input type="text" name="agreementNo" />
+          </div>
+          <div>
+            <label>Expiration Date</label>
+            <input type="date" name="expirationDate" />
+          </div>
+          <div>
+            <label>Make / Model</label>
+            <input type="text" name="makeModel" />
+          </div>
+          <div>
+            <label>Equipment Type</label>
+            <input type="text" name="equipmentType" />
+          </div>
+          <div>
+            <label>VIN / Serial No.</label>
+            <input type="text" name="vinSerial" />
+          </div>
+          <div>
+            <label>License No. / State</label>
+            <input type="text" name="licenseState" />
+          </div>
+        </div>
+
+        <div class="items">
+          <h2>Section I — Heavy equipment (Yes / No)</h2>
+          <div id="heavyItems"></div>
+
+          <h2>Section II — Attachments / Pump / Chainsaw / Other (Yes / No)</h2>
+          <label>Specify (optional)</label>
+          <input type="text" name="sectionIISpecify" placeholder="e.g., broom, water truck pump, chainsaw, etc." />
+          <div id="attachItems"></div>
+
+          <h2>Pre-use inspection</h2>
+          <div class="grid3">
+            <div>
+              <label>Status</label>
+              <select name="preUseStatus">
+                <option value="">—</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+            <div>
+              <label>Miles / Hrs</label>
+              <input type="text" name="preUseMilesHrs" />
+            </div>
+            <div>
+              <label>Date</label>
+              <input type="date" name="preUseDate" />
+            </div>
+            <div>
+              <label>Time</label>
+              <input type="time" name="preUseTime" />
+            </div>
+            <div>
+              <label>Inspector Printed Name</label>
+              <input type="text" name="inspectorName" />
+            </div>
+            <div>
+              <label>Inspector Title</label>
+              <input type="text" name="inspectorTitle" />
+            </div>
+          </div>
+
+          <h2>Section III — Liability</h2>
+          <div class="grid2">
+            <div>
+              <label>Operator Printed Name</label>
+              <input type="text" name="operatorName" />
+            </div>
+            <div>
+              <label>Operator Title</label>
+              <input type="text" name="operatorTitle" />
+            </div>
+            <div>
+              <label>Operator Signature (typed)</label>
+              <input type="text" name="operatorSignature" placeholder="Type full name" />
+            </div>
+            <div>
+              <label>Date</label>
+              <input type="date" name="operatorDate" />
+            </div>
+          </div>
+
+          <h2>Section IV — Transport or support vehicles (Yes / No)</h2>
+          <div id="transportItems"></div>
+
+          <h2>Release</h2>
+          <div class="grid3">
+            <div>
+              <label>No Damage / No Claim</label>
+              <select name="releaseNoDamage">
+                <option value="">—</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+            <div>
+              <label>Miles / Hrs</label>
+              <input type="text" name="releaseMilesHrs" />
+            </div>
+            <div>
+              <label>Date</label>
+              <input type="date" name="releaseDate" />
+            </div>
+            <div>
+              <label>Time</label>
+              <input type="time" name="releaseTime" />
+            </div>
+            <div>
+              <label>Inspector Printed Name</label>
+              <input type="text" name="releaseInspectorName" />
+            </div>
+            <div>
+              <label>Operator Printed Name</label>
+              <input type="text" name="releaseOperatorName" />
+            </div>
+          </div>
+
+          <h2>Section V — Remarks</h2>
+          <label>Describe all unsatisfactory items and identify by line number</label>
+          <textarea name="remarks"></textarea>
+
+          <div class="btns">
+            <button class="primary" type="button" onclick="submitEmail()">Submit (opens email draft)</button>
+            <button type="button" onclick="resetForm()">Clear form</button>
+            <button type="button" onclick="downloadJson()">Download JSON copy</button>
+          </div>
+
+          <p class="note">
+            Submit uses your device’s standard email app (mailto). If the checklist is very long, some email clients may truncate.
+            For guaranteed delivery without relying on a user’s email client, you’d add a small server endpoint to send the email.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>PDF reference (optional embed)</h2>
+        <p class="small">
+          Put the PDF in the same folder as this HTML and name it <code>OF-296_Equipment Checklist.pdf</code>, or change the iframe src below.
+        </p>
+        <iframe src="./OF-296_Equipment%20Checklist.pdf" title="OF-296 PDF"></iframe>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Items based on OF-296 (REV. 2-2016) sections shown on the uploaded PDF.
+  // Keep text short here so email stays within typical mailto limits.
+  const heavy = [
+    "1 ROPS / seat belt",
+    "2 Gauges & lights",
+    "3 Battery condition",
+    "4 Engine running: oil pressure/knocks/leaks",
+    "5 Sweeps/deflectors/screens",
+    "6 Steering components",
+    "7 Brakes",
+    "8 Exhaust spark arrester (if required)",
+    "9 Fuel system",
+    "10 Cooling system",
+    "11 Fan & belts",
+    "12 Engine support/equalizer/springs",
+    "13 Belly plate/guards/clean",
+    "14 Final drive/trans/diff leaks",
+    "15 Sprockets/idlers",
+    "16 Tracks/rollers",
+    "17 Dozer & assembly",
+    "18 Rear hitch/drawbar",
+    "19 Body/cab condition",
+    "20 Cleanliness (flammables/weeds/invasive)",
+    "21 Hydraulics/attachments operate; hoses/lines ok",
+    "22 Backup/travel alarm",
+    "23 Oil level/condition"
+  ];
+
+  const attach = [
+    "1 No missing/broken components; hardware tight",
+    "2 Fluids sufficient (oil/coolant/etc.)",
+    "3 Cutting bar straight; chain good (if applicable)",
+    "4 Cutting teeth sharp (if applicable)",
+    "5 Pump builds pressure; no leaks (if applicable)",
+    "6 Engine starts/idles/shuts off (if applicable)"
+  ];
+
+  const transport = [
+    "1 DOT/CVSA inspection current (if required)",
+    "2 Gauges & lights",
+    "3 Seat belts",
+    "4 Glass/mirrors",
+    "5 Wipers/washer/horn",
+    "6 Clutch adjustment (if applicable)",
+    "7 Cooling system",
+    "8 Fluid levels/condition",
+    "9 Battery condition",
+    "10 Fuel system",
+    "11 Electrical: alternator/starter",
+    "12 Engine running: oil pressure/knocks/leaks",
+    "13 Transmission leaks",
+    "14 Steering components",
+    "15 Brakes",
+    "16 4WD transfer case (if applicable)",
+    "17 Driveline U-joints",
+    "18 Suspension systems",
+    "19 Differentials",
+    "20 Exhaust system",
+    "21 Frame/body/bed attached",
+    "22 Tires/wheels/spare; tread; damage",
+    "23 Body/interior condition documented",
+    "24 Emergency equipment (extinguisher/fuses/reflectors)",
+    "25 Licensed operator info"
+  ];
+
+  function renderYN(containerId, items, prefix) {
+    const root = document.getElementById(containerId);
+    items.forEach((t, idx) => {
+      const key = `${prefix}_${idx+1}`;
+      const el = document.createElement("div");
+      el.className = "item";
+      el.innerHTML = `
+        <div class="desc">${t}</div>
+        <div class="yn" role="group" aria-label="${t}">
+          <label><input type="radio" name="${key}" value="Yes"> Yes</label>
+          <label><input type="radio" name="${key}" value="No"> No</label>
+          <label><input type="radio" name="${key}" value="" checked> —</label>
+        </div>
+      `;
+      root.appendChild(el);
+    });
+  }
+
+  renderYN("heavyItems", heavy, "heavy");
+  renderYN("attachItems", attach, "attach");
+  renderYN("transportItems", transport, "transport");
+
+  function getValue(name) {
+    const el = document.querySelector(`[name="${name}"]`);
+    if (!el) return "";
+    if (el.type === "radio") {
+      const sel = document.querySelector(`[name="${name}"]:checked`);
+      return sel ? sel.value : "";
+    }
+    return (el.value || "").trim();
+  }
+
+  function getRadioVal(groupName) {
+    const sel = document.querySelector(`input[name="${groupName}"]:checked`);
+    return sel ? sel.value : "";
+  }
+
+  function collectData() {
+    const data = {
+      incidentName: getValue("incidentName"),
+      resourceOrder: getValue("resourceOrder"),
+      contractorName: getValue("contractorName"),
+      agreementNo: getValue("agreementNo"),
+      expirationDate: getValue("expirationDate"),
+      makeModel: getValue("makeModel"),
+      equipmentType: getValue("equipmentType"),
+      vinSerial: getValue("vinSerial"),
+      licenseState: getValue("licenseState"),
+      sectionI: heavy.map((t, i) => ({ item: t, val: getRadioVal(`heavy_${i+1}`) })),
+      sectionIISpecify: getValue("sectionIISpecify"),
+      sectionII: attach.map((t, i) => ({ item: t, val: getRadioVal(`attach_${i+1}`) })),
+      preUseStatus: getValue("preUseStatus"),
+      preUseMilesHrs: getValue("preUseMilesHrs"),
+      preUseDate: getValue("preUseDate"),
+      preUseTime: getValue("preUseTime"),
+      inspectorName: getValue("inspectorName"),
+      inspectorTitle: getValue("inspectorTitle"),
+      operatorName: getValue("operatorName"),
+      operatorTitle: getValue("operatorTitle"),
+      operatorSignature: getValue("operatorSignature"),
+      operatorDate: getValue("operatorDate"),
+      sectionIV: transport.map((t, i) => ({ item: t, val: getRadioVal(`transport_${i+1}`) })),
+      releaseNoDamage: getValue("releaseNoDamage"),
+      releaseMilesHrs: getValue("releaseMilesHrs"),
+      releaseDate: getValue("releaseDate"),
+      releaseTime: getValue("releaseTime"),
+      releaseInspectorName: getValue("releaseInspectorName"),
+      releaseOperatorName: getValue("releaseOperatorName"),
+      remarks: getValue("remarks")
+    };
+    return data;
+  }
+
+  function formatEmailBody(d) {
+    const ynLine = (arr) => arr.map(x => `${x.item}: ${x.val || "—"}`).join("\n");
+
+    return [
+      "VEHICLE/HEAVY EQUIPMENT PRE-USE INSPECTION",
+      "",
+      `Incident Name/No.: ${d.incidentName}`,
+      `Resource Order No.: ${d.resourceOrder}`,
+      `Contractor Name: ${d.contractorName}`,
+      `Agreement No.: ${d.agreementNo}`,
+      `Expiration Date: ${d.expirationDate}`,
+      `Make/Model: ${d.makeModel}`,
+      `Equipment Type: ${d.equipmentType}`,
+      `VIN/Serial No.: ${d.vinSerial}`,
+      `License No./State: ${d.licenseState}`,
+      "",
+      "SECTION I — HEAVY EQUIPMENT",
+      ynLine(d.sectionI),
+      "",
+      `SECTION II — ATTACHMENTS/OTHER (Specify): ${d.sectionIISpecify}`,
+      ynLine(d.sectionII),
+      "",
+      "PRE-USE INSPECTION",
+      `Status: ${d.preUseStatus}`,
+      `Miles/Hrs: ${d.preUseMilesHrs}`,
+      `Date: ${d.preUseDate}`,
+      `Time: ${d.preUseTime}`,
+      `Inspector: ${d.inspectorName} (${d.inspectorTitle})`,
+      "",
+      "SECTION III — LIABILITY",
+      `Operator: ${d.operatorName} (${d.operatorTitle})`,
+      `Signature (typed): ${d.operatorSignature}`,
+      `Date: ${d.operatorDate}`,
+      "",
+      "SECTION IV — TRANSPORT/SUPPORT VEHICLES",
+      ynLine(d.sectionIV),
+      "",
+      "RELEASE",
+      `No Damage/No Claim: ${d.releaseNoDamage}`,
+      `Miles/Hrs: ${d.releaseMilesHrs}`,
+      `Date: ${d.releaseDate}`,
+      `Time: ${d.releaseTime}`,
+      `Inspector: ${d.releaseInspectorName}`,
+      `Operator: ${d.releaseOperatorName}`,
+      "",
+      "REMARKS",
+      d.remarks || "—"
+    ].join("\n");
+  }
+
+  function submitEmail() {
+    const d = collectData();
+
+    const subjectParts = [
+      "Pre-Use Inspection",
+      d.makeModel || d.equipmentType || "",
+      d.licenseState || "",
+      d.preUseDate || ""
+    ].filter(Boolean);
+
+    const subject = subjectParts.join(" | ");
+    const body = formatEmailBody(d);
+
+    // mailto relies on the user's default email app (Outlook, Apple Mail, Gmail handler, etc.)
+    const mailto = `mailto:paul@archercivilllc.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+  }
+
+  function resetForm() {
+    document.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], textarea').forEach(el => el.value = "");
+    document.querySelectorAll('select').forEach(el => el.value = "");
+    // reset radios to "—"
+    ["heavy","attach","transport"].forEach(prefix => {
+      document.querySelectorAll(`input[name^="${prefix}_"]`).forEach(r => {
+        if (r.value === "") r.checked = true;
+      });
+    });
+  }
+
+  function downloadJson() {
+    const d = collectData();
+    const blob = new Blob([JSON.stringify(d, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `preuse-inspection-${(d.preUseDate || "undated")}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+</script>
+</body>
+</html>
