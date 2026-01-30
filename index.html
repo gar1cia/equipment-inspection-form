@@ -16,6 +16,8 @@
       --shadow: 0 10px 24px rgba(17,24,39,.08);
       --radius:16px;
       --tap:48px;
+      --itemFont: 14px;
+      --sectionFont: calc(var(--itemFont) * 1.6); /* 1.6x item line font */
     }
 
     *{ box-sizing:border-box; }
@@ -33,11 +35,15 @@
       padding-bottom: calc(14px + env(safe-area-inset-bottom));
     }
 
+    /* Centered logo + title */
     .brandbar{
       display:flex;
+      flex-direction: column;
       align-items:center;
-      gap:12px;
-      padding: 10px 12px;
+      justify-content:center;
+      gap: 10px;
+      text-align:center;
+      padding: 18px 14px;
       background: var(--card);
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -46,22 +52,17 @@
     }
 
     .brandbar img{
-      width: 110px;
+      width: min(260px, 70vw);
       height: auto;
       object-fit: contain;
     }
 
     h1{
       margin: 0;
-      font-size: clamp(22px, 5.2vw, 34px); /* bigger title */
-      line-height: 1.15;
+      font-size: clamp(26px, 6.2vw, 40px);
+      line-height: 1.12;
       letter-spacing: -.01em;
-    }
-
-    .sub{
-      margin-top: 2px;
-      color: var(--muted);
-      font-size: 13px;
+      color: var(--ink);
     }
 
     .card{
@@ -72,13 +73,17 @@
       padding: 14px;
     }
 
-    h2{
-      margin: 0 0 10px;
-      font-size: 13px;
+    /* Section headings (e.g., PRE-USE INSPECTION) */
+    h2.section-title{
+      margin: 30px 0 12px;     /* whitespace before each subheading */
+      font-size: var(--sectionFont);
       color: var(--muted);
-      font-weight: 700;
-      letter-spacing: .06em;
+      font-weight: 800;
+      letter-spacing: .08em;
       text-transform: uppercase;
+    }
+    h2.section-title:first-of-type{
+      margin-top: 0;
     }
 
     label{
@@ -100,9 +105,7 @@
       font-size: 16px; /* prevents iOS zoom */
     }
 
-    input[readonly]{
-      background: #f9fafb;
-    }
+    input[readonly]{ background:#f9fafb; }
 
     textarea{
       min-height: 110px;
@@ -129,8 +132,8 @@
 
     .items{
       border-top: 1px solid var(--line);
-      margin-top: 14px;
-      padding-top: 14px;
+      margin-top: 16px;
+      padding-top: 6px;
     }
 
     .item{
@@ -145,8 +148,9 @@
     }
 
     .desc{
-      font-size: 14px;
+      font-size: var(--itemFont);
       line-height: 1.25rem;
+      color: var(--ink);
     }
 
     .yn{
@@ -196,13 +200,14 @@
       border-color: rgba(40,62,138,.35);
       background: rgba(40,62,138,.08);
       color: var(--accent);
-      font-weight: 700;
+      font-weight: 800;
     }
 
     button.danger{
       color:#b42318;
       background:#fff;
       border-color:#fecaca;
+      font-weight: 700;
     }
 
     button:active{ transform: translateY(1px); }
@@ -216,7 +221,7 @@
 
     /* PDF behind button (details/summary = mobile friendly) */
     details{
-      margin-top: 10px;
+      margin-top: 22px; /* extra whitespace above PDF button */
       border: 1px solid var(--line);
       border-radius: 14px;
       background: #fff;
@@ -225,12 +230,14 @@
     summary{
       list-style:none;
       cursor:pointer;
-      padding: 12px 14px;
+      padding: 14px 14px;
       min-height: var(--tap);
       display:flex;
       align-items:center;
+      justify-content:center;
       gap: 10px;
-      font-weight: 700;
+      font-weight: 900;
+      font-size: 18px;
       color: var(--accent);
     }
     summary::-webkit-details-marker{ display:none; }
@@ -246,7 +253,7 @@
       background:#fff;
     }
 
-    /* Sticky submit bar for mobile */
+    /* Sticky bar for mobile */
     .stickybar{
       position: sticky;
       bottom: 0;
@@ -282,14 +289,11 @@
     <div class="brandbar">
       <!-- Put the logo file in the same folder and name it exactly "gjhh-logo.png" -->
       <img src="./gjhh-logo.png" alt="G&J Heavy Haul logo">
-      <div>
-        <h1>Vehicle / Heavy Equipment Pre-Use Inspection Checklist</h1>
-        <div class="sub">G&J Heavy Haul, Inc. • Mobile-optimized • Email submit</div>
-      </div>
+      <h1>Vehicle / Heavy Equipment Pre-Use Inspection Checklist</h1>
     </div>
 
     <div class="card">
-      <h2>General equipment information</h2>
+      <h2 class="section-title" style="margin-top:0;">General equipment information</h2>
 
       <div class="grid2">
         <!-- Removed: Incident Name/No., Resource Order No., Agreement No., Expiration Date -->
@@ -331,15 +335,19 @@
       </details>
 
       <div class="items">
-        <h2>Section I — Heavy equipment (Yes / No)</h2>
+        <h2 class="section-title">Section I — Heavy equipment (Acceptable / Not acceptable / N/A)</h2>
         <div id="heavyItems"></div>
 
-        <h2>Section II — Attachments / Pump / Chainsaw / Other (Yes / No)</h2>
+        <h2 class="section-title">Section II — Attachments / Pump / Chainsaw / Other (Acceptable / Not acceptable / N/A)</h2>
         <label>Specify (optional)</label>
         <input type="text" name="sectionIISpecify" placeholder="e.g., broom, water truck pump, chainsaw, etc." />
         <div id="attachItems"></div>
 
-        <h2>Pre-use inspection</h2>
+        <h2 class="section-title">Pre-use inspection</h2>
+        <div class="btns" style="margin-top:0;">
+          <button class="primary" type="button" onclick="stampNow()">Set Date/Time to Now</button>
+        </div>
+
         <div class="grid3">
           <div>
             <label>Status</label>
@@ -371,7 +379,7 @@
           </div>
         </div>
 
-        <h2>Section III — Liability</h2>
+        <h2 class="section-title">Section III — Liability</h2>
         <div class="grid2">
           <div>
             <label>Operator Printed Name</label>
@@ -391,10 +399,10 @@
           </div>
         </div>
 
-        <h2>Section IV — Transport or support vehicles (Yes / No)</h2>
+        <h2 class="section-title">Section IV — Transport or support vehicles (Acceptable / Not acceptable / N/A)</h2>
         <div id="transportItems"></div>
 
-        <h2>Release</h2>
+        <h2 class="section-title">Release</h2>
         <div class="grid3">
           <div>
             <label>No Damage / No Claim</label>
@@ -426,13 +434,13 @@
           </div>
         </div>
 
-        <h2>Section V — Remarks</h2>
+        <h2 class="section-title">Section V — Remarks</h2>
         <label>Describe all unsatisfactory items and identify by line number</label>
         <textarea name="remarks"></textarea>
 
         <div class="stickybar">
           <div class="left">
-            Submit opens an email draft to <strong>paul@archercivilllc.com</strong> using the device’s default mail app.
+            Submit opens an email draft to paul@archercivilllc.com using the device’s default mail app.
           </div>
           <div class="right">
             <button class="primary" type="button" onclick="submitEmail()">Submit</button>
@@ -449,71 +457,72 @@
   </div>
 
 <script>
-  // Checklist items retained as-is
+  // Full item language aligned to OF-296 (REV. 2-2016)
+
   const heavy = [
-    "1 ROPS / seat belt",
-    "2 Gauges & lights",
-    "3 Battery condition",
-    "4 Engine running: oil pressure/knocks/leaks",
-    "5 Sweeps/deflectors/screens",
-    "6 Steering components",
-    "7 Brakes",
-    "8 Exhaust spark arrester (if required)",
-    "9 Fuel system",
-    "10 Cooling system",
-    "11 Fan & belts",
-    "12 Engine support/equalizer/springs",
-    "13 Belly plate/guards/clean",
-    "14 Final drive/trans/diff leaks",
-    "15 Sprockets/idlers",
-    "16 Tracks/rollers",
-    "17 Dozer & assembly",
-    "18 Rear hitch/drawbar",
-    "19 Body/cab condition",
-    "20 Cleanliness (flammables/weeds/invasive)",
-    "21 Hydraulics/attachments operate; hoses/lines ok",
-    "22 Backup/travel alarm",
-    "23 Oil level/condition"
+    "1. ROPS, roll-over protection system: Manufacturer-approved system secured to mainframe of tractor. Must include approved seat belts. *",
+    "2. Gauges and lights: mounted and function properly. *",
+    "3. Battery: check for corrosion, loose terminals, and hold downs.",
+    "4. Engine running: check oil pressure, knocks and leaks.",
+    "5. Sweeps, deflectors, safety screens (glass). *",
+    "6. Steering components: tight, free of play. *",
+    "7. Brakes: damaged, worn or out of adjustment. *",
+    "8. Exhaust system: equipped with a USFS-qualified spark arrester unless turbocharged.",
+    "9. Fuel system: free of leaks and damage. *",
+    "10. Cooling system: full, free of leaks and damage. *",
+    "11. Fan and fan belts: check for proper tension. No fraying/cracks.",
+    "12. Engine support, equalizer bar, springs, main springs: check shackle bolts, shifted spring leaf.",
+    "13. Belly plate, radiator guards: securely mounted and free from debris. *",
+    "14. Final drive, transmission and differential: check for dripping.",
+    "15. Sprocket and idlers: crack in spokes, sharp sprocket teeth, no welds.",
+    "16. Tracks and rollers: no broken pads, loose rollers, broken flanges. *",
+    "17. Dozer and assembly: trunnion bolts missing, cracks. *",
+    "18. Rear hitch (drawbar): serviceable, safe.",
+    "19. Body and cab condition: describe dents and damage.",
+    "20. Equipment cleanliness: all areas free of flammable materials, noxious weeds, and invasive species.",
+    "21. All hydraulic attachments: operate smoothly and all cylinders hold at extension; hose, lines, and pumps have no excessive wear and/or leaks.",
+    "22. Backup or travel alarm (minimum 87 dbl). *",
+    "23. Oil level and condition: full and clean."
   ];
 
   const attach = [
-    "1 No missing/broken components; hardware tight",
-    "2 Fluids sufficient (oil/coolant/etc.)",
-    "3 Cutting bar straight; chain good (if applicable)",
-    "4 Cutting teeth sharp (if applicable)",
-    "5 Pump builds pressure; no leaks (if applicable)",
-    "6 Engine starts/idles/shuts off (if applicable)"
+    "1. No missing/broken components, no loose hardware.",
+    "2. Sufficient fluid levels (oil, coolant, etc.).",
+    "3. Cutting bar: straight, chain in good condition.",
+    "4. Cutting teeth: sharp, good repair.",
+    "5. Pump: builds pressure, no water or oil leaks.",
+    "6. Engine starts, idles, and shuts off with switch."
   ];
 
   const transport = [
-    "1 DOT/CVSA inspection current (if required)",
-    "2 Gauges & lights",
-    "3 Seat belts",
-    "4 Glass/mirrors",
-    "5 Wipers/washer/horn",
-    "6 Clutch adjustment (if applicable)",
-    "7 Cooling system",
-    "8 Fluid levels/condition",
-    "9 Battery condition",
-    "10 Fuel system",
-    "11 Electrical: alternator/starter",
-    "12 Engine running: oil pressure/knocks/leaks",
-    "13 Transmission leaks",
-    "14 Steering components",
-    "15 Brakes",
-    "16 4WD transfer case (if applicable)",
-    "17 Driveline U-joints",
-    "18 Suspension systems",
-    "19 Differentials",
-    "20 Exhaust system",
-    "21 Frame/body/bed attached",
-    "22 Tires/wheels/spare; tread; damage",
-    "23 Body/interior condition documented",
-    "24 Emergency equipment (extinguisher/fuses/reflectors)",
-    "25 Licensed operator info"
+    "1. “DOT” or CVSA inspection in the last 12 months (if required). *",
+    "2. Gauges and lights: mounted and function properly. *",
+    "3. Seat belts: operate properly for each seating position. *",
+    "4. Glass and mirrors, no cracks in vision. *",
+    "5. Wipers, washers, and horn operate properly. *",
+    "6. Clutch pedal: proper adjustment (if applicable).",
+    "7. Cooling system: full, free of leaks and damage.",
+    "8. Fluid levels (e.g. oil) and condition: full and clean.",
+    "9. Battery: check for corrosion, loose terminals and hold downs.",
+    "10. Fuel system: free of leaks and damage. *",
+    "11. Electrical system: alternator and starter work. *",
+    "12. Engine running: check oil pressure, knocks, and leaks.",
+    "13. Transmission: check for leaks.",
+    "14. Steering components: tight, free of play. *",
+    "15. Brakes: damaged, worn or out of adjustment. *",
+    "16. 4-Wheel drive: check transfer case, leaks (if applicable).",
+    "17. Drive line U-joints: check for looseness.",
+    "18. Suspension systems: springs, shocks, other. *",
+    "19. Differential(s): check for leaks.",
+    "20. Exhaust system: no leaks under cab or before turbo. *",
+    "21. Frame condition, body/bed properly attached. *",
+    "22. Tires/wheels (including spare and all changing equipment): sufficient load rating, tread depth, no major damage. *",
+    "23. Body and interior condition: describe and locate damage (see supplemental information on back).",
+    "24. Emergency equipment required. * (Fire extinguisher / Spare fuses / Reflectors)",
+    "25. Operator(s) properly licensed. †"
   ];
 
-  function renderYN(containerId, items, prefix) {
+  function renderAccept(containerId, items, prefix) {
     const root = document.getElementById(containerId);
     items.forEach((t, idx) => {
       const key = `${prefix}_${idx+1}`;
@@ -522,26 +531,22 @@
       el.innerHTML = `
         <div class="desc">${t}</div>
         <div class="yn" role="group" aria-label="${t}">
-          <label class="ynlabel"><input type="radio" name="${key}" value="Yes"> Yes</label>
-          <label class="ynlabel"><input type="radio" name="${key}" value="No"> No</label>
-          <label class="ynlabel"><input type="radio" name="${key}" value="" checked> —</label>
+          <label class="ynlabel"><input type="radio" name="${key}" value="Acceptable"> Acceptable</label>
+          <label class="ynlabel"><input type="radio" name="${key}" value="Not acceptable"> Not acceptable</label>
+          <label class="ynlabel"><input type="radio" name="${key}" value="" checked> N/A</label>
         </div>
       `;
       root.appendChild(el);
     });
   }
 
-  renderYN("heavyItems", heavy, "heavy");
-  renderYN("attachItems", attach, "attach");
-  renderYN("transportItems", transport, "transport");
+  renderAccept("heavyItems", heavy, "heavy");
+  renderAccept("attachItems", attach, "attach");
+  renderAccept("transportItems", transport, "transport");
 
   function getValue(name) {
     const el = document.querySelector(`[name="${name}"]`);
     if (!el) return "";
-    if (el.type === "radio") {
-      const sel = document.querySelector(`[name="${name}"]:checked`);
-      return sel ? sel.value : "";
-    }
     return (el.value || "").trim();
   }
 
@@ -582,7 +587,7 @@
   }
 
   function formatEmailBody(d) {
-    const ynLine = (arr) => arr.map(x => `${x.item}: ${x.val || "—"}`).join("\n");
+    const line = (arr) => arr.map(x => `${x.item} => ${x.val || "N/A"}`).join("\n");
 
     return [
       "VEHICLE / HEAVY EQUIPMENT PRE-USE INSPECTION",
@@ -593,11 +598,11 @@
       `VIN/Serial No.: ${d.vinSerial}`,
       `License No./State: ${d.licenseState}`,
       "",
-      "SECTION I — HEAVY EQUIPMENT",
-      ynLine(d.sectionI),
+      "SECTION I — HEAVY EQUIPMENT (Acceptable / Not acceptable / N/A)",
+      line(d.sectionI),
       "",
       `SECTION II — ATTACHMENTS/OTHER (Specify): ${d.sectionIISpecify}`,
-      ynLine(d.sectionII),
+      line(d.sectionII),
       "",
       "PRE-USE INSPECTION",
       `Status: ${d.preUseStatus}`,
@@ -611,8 +616,8 @@
       `Signature (typed): ${d.operatorSignature}`,
       `Date: ${d.operatorDate}`,
       "",
-      "SECTION IV — TRANSPORT/SUPPORT VEHICLES",
-      ynLine(d.sectionIV),
+      "SECTION IV — TRANSPORT/SUPPORT VEHICLES (Acceptable / Not acceptable / N/A)",
+      line(d.sectionIV),
       "",
       "RELEASE",
       `No Damage/No Claim: ${d.releaseNoDamage}`,
@@ -652,9 +657,37 @@
 
     ["heavy","attach","transport"].forEach(prefix => {
       document.querySelectorAll(`input[name^="${prefix}_"]`).forEach(r => {
-        if (r.value === "") r.checked = true;
+        if (r.value === "") r.checked = true; // N/A default
       });
     });
+  }
+
+  function stampNow() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    const hh = String(now.getHours()).padStart(2, "0");
+    const mi = String(now.getMinutes()).padStart(2, "0");
+
+    const dateVal = `${yyyy}-${mm}-${dd}`;
+    const timeVal = `${hh}:${mi}`;
+
+    const setIfExists = (name, val) => {
+      const el = document.querySelector(`[name="${name}"]`);
+      if (el) el.value = val;
+    };
+
+    // Pre-use
+    setIfExists("preUseDate", dateVal);
+    setIfExists("preUseTime", timeVal);
+
+    // Liability signature date
+    setIfExists("operatorDate", dateVal);
+
+    // Release
+    setIfExists("releaseDate", dateVal);
+    setIfExists("releaseTime", timeVal);
   }
 </script>
 </body>
