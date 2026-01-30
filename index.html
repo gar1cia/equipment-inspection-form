@@ -17,7 +17,8 @@
       --radius:16px;
       --tap:48px;
       --itemFont: 14px;
-      --sectionFont: calc(var(--itemFont) * 1.6); /* 1.6x item line font */
+      --sectionFont: calc(var(--itemFont) * 1.6);
+      --sectionSubFont: calc(var(--sectionFont) * 0.72);
     }
 
     *{ box-sizing:border-box; }
@@ -35,7 +36,6 @@
       padding-bottom: calc(14px + env(safe-area-inset-bottom));
     }
 
-    /* Centered logo + title */
     .brandbar{
       display:flex;
       flex-direction: column;
@@ -73,17 +73,29 @@
       padding: 14px;
     }
 
-    /* Section headings (e.g., PRE-USE INSPECTION) */
-    h2.section-title{
-      margin: 30px 0 12px;     /* whitespace before each subheading */
+    /* Section heading block */
+    .section{
+      margin: 30px 0 12px;
+    }
+    .section:first-of-type{
+      margin-top: 0;
+    }
+    .section .title{
+      margin: 0;
       font-size: var(--sectionFont);
       color: var(--muted);
       font-weight: 800;
       letter-spacing: .08em;
       text-transform: uppercase;
+      line-height: 1.15;
     }
-    h2.section-title:first-of-type{
-      margin-top: 0;
+    .section .sub{
+      margin-top: 6px;
+      font-size: var(--sectionSubFont);
+      color: var(--muted);
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
     }
 
     label{
@@ -102,7 +114,7 @@
       color: var(--ink);
       outline: none;
       min-height: var(--tap);
-      font-size: 16px; /* prevents iOS zoom */
+      font-size: 16px;
     }
 
     input[readonly]{ background:#f9fafb; }
@@ -177,7 +189,6 @@
       height: 18px;
     }
 
-    /* Buttons */
     .btns{
       display:flex;
       gap: 10px;
@@ -219,9 +230,8 @@
       margin-top: 10px;
     }
 
-    /* PDF behind button (details/summary = mobile friendly) */
     details{
-      margin-top: 22px; /* extra whitespace above PDF button */
+      margin-top: 22px;
       border: 1px solid var(--line);
       border-radius: 14px;
       background: #fff;
@@ -253,7 +263,6 @@
       background:#fff;
     }
 
-    /* Sticky bar for mobile */
     .stickybar{
       position: sticky;
       bottom: 0;
@@ -285,19 +294,17 @@
 
 <body>
   <div class="wrap">
-
     <div class="brandbar">
-      <!-- Put the logo file in the same folder and name it exactly "gjhh-logo.png" -->
       <img src="./gjhh-logo.png" alt="G&J Heavy Haul logo">
       <h1>Vehicle / Heavy Equipment Pre-Use Inspection Checklist</h1>
     </div>
 
     <div class="card">
-      <h2 class="section-title" style="margin-top:0;">General equipment information</h2>
+      <div class="section">
+        <div class="title">General equipment information</div>
+      </div>
 
       <div class="grid2">
-        <!-- Removed: Incident Name/No., Resource Order No., Agreement No., Expiration Date -->
-
         <div>
           <label>Contractor Name</label>
           <input type="text" name="contractorName" value="G&J Heavy Haul" readonly />
@@ -335,15 +342,25 @@
       </details>
 
       <div class="items">
-        <h2 class="section-title">Section I — Heavy equipment (Acceptable / Not acceptable / N/A)</h2>
+        <div class="section">
+          <div class="title">SECTION I — HEAVY EQUIPMENT</div>
+          <div class="sub">SAFE TO OPERATE?</div>
+        </div>
         <div id="heavyItems"></div>
 
-        <h2 class="section-title">Section II — Attachments / Pump / Chainsaw / Other (Acceptable / Not acceptable / N/A)</h2>
+        <div class="section">
+          <div class="title">SECTION II — ATTACHMENTS / PUMP / CHAINSAW / OTHER</div>
+          <div class="sub">SAFE TO OPERATE?</div>
+        </div>
+
         <label>Specify (optional)</label>
         <input type="text" name="sectionIISpecify" placeholder="e.g., broom, water truck pump, chainsaw, etc." />
         <div id="attachItems"></div>
 
-        <h2 class="section-title">Pre-use inspection</h2>
+        <div class="section">
+          <div class="title">PRE-USE INSPECTION</div>
+        </div>
+
         <div class="btns" style="margin-top:0;">
           <button class="primary" type="button" onclick="stampNow()">Set Date/Time to Now</button>
         </div>
@@ -379,7 +396,10 @@
           </div>
         </div>
 
-        <h2 class="section-title">Section III — Liability</h2>
+        <div class="section">
+          <div class="title">SECTION III — LIABILITY</div>
+        </div>
+
         <div class="grid2">
           <div>
             <label>Operator Printed Name</label>
@@ -399,10 +419,16 @@
           </div>
         </div>
 
-        <h2 class="section-title">Section IV — Transport or support vehicles (Acceptable / Not acceptable / N/A)</h2>
+        <div class="section">
+          <div class="title">SECTION IV — TRANSPORT OR SUPPORT VEHICLES</div>
+          <div class="sub">SAFE TO OPERATE?</div>
+        </div>
         <div id="transportItems"></div>
 
-        <h2 class="section-title">Release</h2>
+        <div class="section">
+          <div class="title">RELEASE</div>
+        </div>
+
         <div class="grid3">
           <div>
             <label>No Damage / No Claim</label>
@@ -434,13 +460,16 @@
           </div>
         </div>
 
-        <h2 class="section-title">Section V — Remarks</h2>
+        <div class="section">
+          <div class="title">SECTION V — REMARKS</div>
+        </div>
+
         <label>Describe all unsatisfactory items and identify by line number</label>
         <textarea name="remarks"></textarea>
 
         <div class="stickybar">
           <div class="left">
-            Submit opens an email draft to paul@archercivilllc.com using the device’s default mail app.
+            Submit opens an email draft to salud.madrigal@gjheavyhaul.com using the device’s default mail app.
           </div>
           <div class="right">
             <button class="primary" type="button" onclick="submitEmail()">Submit</button>
@@ -522,7 +551,7 @@
     "25. Operator(s) properly licensed. †"
   ];
 
-  function renderAccept(containerId, items, prefix) {
+  function renderYesNoNA(containerId, items, prefix) {
     const root = document.getElementById(containerId);
     items.forEach((t, idx) => {
       const key = `${prefix}_${idx+1}`;
@@ -531,8 +560,8 @@
       el.innerHTML = `
         <div class="desc">${t}</div>
         <div class="yn" role="group" aria-label="${t}">
-          <label class="ynlabel"><input type="radio" name="${key}" value="Acceptable"> Acceptable</label>
-          <label class="ynlabel"><input type="radio" name="${key}" value="Not acceptable"> Not acceptable</label>
+          <label class="ynlabel"><input type="radio" name="${key}" value="Yes"> Yes</label>
+          <label class="ynlabel"><input type="radio" name="${key}" value="No"> No</label>
           <label class="ynlabel"><input type="radio" name="${key}" value="" checked> N/A</label>
         </div>
       `;
@@ -540,9 +569,9 @@
     });
   }
 
-  renderAccept("heavyItems", heavy, "heavy");
-  renderAccept("attachItems", attach, "attach");
-  renderAccept("transportItems", transport, "transport");
+  renderYesNoNA("heavyItems", heavy, "heavy");
+  renderYesNoNA("attachItems", attach, "attach");
+  renderYesNoNA("transportItems", transport, "transport");
 
   function getValue(name) {
     const el = document.querySelector(`[name="${name}"]`);
@@ -598,10 +627,10 @@
       `VIN/Serial No.: ${d.vinSerial}`,
       `License No./State: ${d.licenseState}`,
       "",
-      "SECTION I — HEAVY EQUIPMENT (Acceptable / Not acceptable / N/A)",
+      "SECTION I — HEAVY EQUIPMENT (SAFE TO OPERATE? Yes / No / N/A)",
       line(d.sectionI),
       "",
-      `SECTION II — ATTACHMENTS/OTHER (Specify): ${d.sectionIISpecify}`,
+      `SECTION II — ATTACHMENTS/OTHER (SAFE TO OPERATE? Yes / No / N/A) (Specify): ${d.sectionIISpecify}`,
       line(d.sectionII),
       "",
       "PRE-USE INSPECTION",
@@ -616,7 +645,7 @@
       `Signature (typed): ${d.operatorSignature}`,
       `Date: ${d.operatorDate}`,
       "",
-      "SECTION IV — TRANSPORT/SUPPORT VEHICLES (Acceptable / Not acceptable / N/A)",
+      "SECTION IV — TRANSPORT/SUPPORT VEHICLES (SAFE TO OPERATE? Yes / No / N/A)",
       line(d.sectionIV),
       "",
       "RELEASE",
@@ -645,12 +674,12 @@
     const subject = subjectParts.join(" | ");
     const body = formatEmailBody(d);
 
-    const mailto = `mailto:paul@archercivilllc.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    // Updated recipient:
+    const mailto = `mailto:salud.madrigal@gjheavyhaul.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
   }
 
   function resetForm() {
-    // Keep contractorName prefilled/readonly
     document.querySelectorAll('input[type="text"]:not([name="contractorName"]), input[type="date"], input[type="time"], textarea')
       .forEach(el => el.value = "");
     document.querySelectorAll('select').forEach(el => el.value = "");
@@ -678,14 +707,9 @@
       if (el) el.value = val;
     };
 
-    // Pre-use
     setIfExists("preUseDate", dateVal);
     setIfExists("preUseTime", timeVal);
-
-    // Liability signature date
     setIfExists("operatorDate", dateVal);
-
-    // Release
     setIfExists("releaseDate", dateVal);
     setIfExists("releaseTime", timeVal);
   }
