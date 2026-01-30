@@ -2,223 +2,454 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vehicle/Heavy Equipment Pre-Use Inspection</title>
-  <style>
-    :root { --bg:#0b0c10; --card:#14161d; --ink:#e9eef5; --muted:#a9b3c1; --line:#2a2f3a; --accent:#7dd3fc; }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--ink); }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 18px; }
-    .row { display: grid; gap: 14px; }
-    @media (min-width: 980px) { .row { grid-template-columns: 1.2fr 0.8fr; } }
-    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
-    h1 { font-size: 18px; margin: 0 0 10px; }
-    h2 { font-size: 14px; margin: 0 0 10px; color: var(--muted); font-weight: 600; letter-spacing: .02em; text-transform: uppercase; }
-    label { display:block; font-size: 12px; color: var(--muted); margin: 10px 0 6px; }
-    input[type="text"], input[type="date"], input[type="time"], textarea, select {
-      width: 100%; padding: 10px 10px; border-radius: 10px;
-      border: 1px solid var(--line); background: #0f1117; color: var(--ink);
-      outline: none;
-    }
-    textarea { min-height: 88px; resize: vertical; }
-    .grid2 { display:grid; gap: 10px; }
-    @media (min-width: 680px) { .grid2 { grid-template-columns: 1fr 1fr; } }
-    .grid3 { display:grid; gap: 10px; }
-    @media (min-width: 680px) { .grid3 { grid-template-columns: 1fr 1fr 1fr; } }
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Vehicle / Heavy Equipment Pre-Use Inspection Checklist</title>
 
-    .items { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 12px; }
-    .item { display:grid; grid-template-columns: 1fr auto; gap: 10px; padding: 10px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }
-    .item .desc { font-size: 13px; line-height: 1.25rem; }
-    .yn { display:flex; gap: 10px; align-items:center; }
-    .yn label { margin: 0; font-size: 12px; color: var(--ink); }
-    .yn input { transform: translateY(1px); }
-    .btns { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
-    button {
-      padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line);
-      background: #0f1117; color: var(--ink); cursor: pointer;
+  <style>
+    :root{
+      --accent:#283e8a;
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --ink:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --shadow: 0 10px 24px rgba(17,24,39,.08);
+      --radius:16px;
+      --tap:48px;
     }
-    button.primary { border-color: #2b6a86; background: rgba(125, 211, 252, .12); }
-    button:hover { filter: brightness(1.08); }
-    .note { font-size: 12px; color: var(--muted); line-height: 1.2rem; }
-    iframe { width: 100%; height: 520px; border: 1px solid var(--line); border-radius: 12px; background:#0f1117; }
-    .small { font-size: 11px; color: var(--muted); }
-    .pill { display:inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 14px;
+      padding-bottom: calc(14px + env(safe-area-inset-bottom));
+    }
+
+    .brandbar{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding: 10px 12px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 12px;
+    }
+
+    .brandbar img{
+      width: 110px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    h1{
+      margin: 0;
+      font-size: clamp(22px, 5.2vw, 34px); /* bigger title */
+      line-height: 1.15;
+      letter-spacing: -.01em;
+    }
+
+    .sub{
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    h2{
+      margin: 0 0 10px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    label{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin: 12px 0 6px;
+    }
+
+    input[type="text"], input[type="date"], input[type="time"], textarea, select{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      min-height: var(--tap);
+      font-size: 16px; /* prevents iOS zoom */
+    }
+
+    input[readonly]{
+      background: #f9fafb;
+    }
+
+    textarea{
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .grid2{
+      display:grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 720px){
+      .grid2{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .grid3{
+      display:grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px){
+      .grid3{ grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .items{
+      border-top: 1px solid var(--line);
+      margin-top: 14px;
+      padding-top: 14px;
+    }
+
+    .item{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      background: #fff;
+    }
+
+    .desc{
+      font-size: 14px;
+      line-height: 1.25rem;
+    }
+
+    .yn{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+
+    .ynlabel{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      min-height: var(--tap);
+      user-select:none;
+    }
+
+    .ynlabel input{
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Buttons */
+    .btns{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    button{
+      min-height: var(--tap);
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button.primary{
+      border-color: rgba(40,62,138,.35);
+      background: rgba(40,62,138,.08);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    button.danger{
+      color:#b42318;
+      background:#fff;
+      border-color:#fecaca;
+    }
+
+    button:active{ transform: translateY(1px); }
+
+    .note{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.25rem;
+      margin-top: 10px;
+    }
+
+    /* PDF behind button (details/summary = mobile friendly) */
+    details{
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      overflow:hidden;
+    }
+    summary{
+      list-style:none;
+      cursor:pointer;
+      padding: 12px 14px;
+      min-height: var(--tap);
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    summary::-webkit-details-marker{ display:none; }
+    .pdfwrap{
+      border-top: 1px solid var(--line);
+      padding: 10px;
+    }
+    iframe{
+      width:100%;
+      height: 70vh;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background:#fff;
+    }
+
+    /* Sticky submit bar for mobile */
+    .stickybar{
+      position: sticky;
+      bottom: 0;
+      margin-top: 14px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow);
+      display:flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items:center;
+    }
+    .stickybar .left{
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.1rem;
+    }
+    .stickybar .right{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <h1>Vehicle/Heavy Equipment Pre-Use Inspection Checklist <span class="pill">Email Submit</span></h1>
 
-    <div class="row">
-      <div class="card">
-        <h2>General equipment information</h2>
+    <div class="brandbar">
+      <!-- Put the logo file in the same folder and name it exactly "gjhh-logo.png" -->
+      <img src="./gjhh-logo.png" alt="G&J Heavy Haul logo">
+      <div>
+        <h1>Vehicle / Heavy Equipment Pre-Use Inspection Checklist</h1>
+        <div class="sub">G&J Heavy Haul, Inc. • Mobile-optimized • Email submit</div>
+      </div>
+    </div>
 
-        <div class="grid2">
-          <div>
-            <label>Incident Name / No.</label>
-            <input type="text" name="incidentName" />
-          </div>
-          <div>
-            <label>Resource Order No.</label>
-            <input type="text" name="resourceOrder" />
-          </div>
-          <div>
-            <label>Contractor Name</label>
-            <input type="text" name="contractorName" />
-          </div>
-          <div>
-            <label>Agreement No.</label>
-            <input type="text" name="agreementNo" />
-          </div>
-          <div>
-            <label>Expiration Date</label>
-            <input type="date" name="expirationDate" />
-          </div>
-          <div>
-            <label>Make / Model</label>
-            <input type="text" name="makeModel" />
-          </div>
-          <div>
-            <label>Equipment Type</label>
-            <input type="text" name="equipmentType" />
-          </div>
-          <div>
-            <label>VIN / Serial No.</label>
-            <input type="text" name="vinSerial" />
-          </div>
-          <div>
-            <label>License No. / State</label>
-            <input type="text" name="licenseState" />
-          </div>
+    <div class="card">
+      <h2>General equipment information</h2>
+
+      <div class="grid2">
+        <!-- Removed: Incident Name/No., Resource Order No., Agreement No., Expiration Date -->
+
+        <div>
+          <label>Contractor Name</label>
+          <input type="text" name="contractorName" value="G&J Heavy Haul" readonly />
         </div>
 
-        <div class="items">
-          <h2>Section I — Heavy equipment (Yes / No)</h2>
-          <div id="heavyItems"></div>
+        <div>
+          <label>Make / Model</label>
+          <input type="text" name="makeModel" />
+        </div>
 
-          <h2>Section II — Attachments / Pump / Chainsaw / Other (Yes / No)</h2>
-          <label>Specify (optional)</label>
-          <input type="text" name="sectionIISpecify" placeholder="e.g., broom, water truck pump, chainsaw, etc." />
-          <div id="attachItems"></div>
+        <div>
+          <label>Equipment Type</label>
+          <input type="text" name="equipmentType" />
+        </div>
 
-          <h2>Pre-use inspection</h2>
-          <div class="grid3">
-            <div>
-              <label>Status</label>
-              <select name="preUseStatus">
-                <option value="">—</option>
-                <option value="Accepted">Accepted</option>
-                <option value="Rejected">Rejected</option>
-              </select>
-            </div>
-            <div>
-              <label>Miles / Hrs</label>
-              <input type="text" name="preUseMilesHrs" />
-            </div>
-            <div>
-              <label>Date</label>
-              <input type="date" name="preUseDate" />
-            </div>
-            <div>
-              <label>Time</label>
-              <input type="time" name="preUseTime" />
-            </div>
-            <div>
-              <label>Inspector Printed Name</label>
-              <input type="text" name="inspectorName" />
-            </div>
-            <div>
-              <label>Inspector Title</label>
-              <input type="text" name="inspectorTitle" />
-            </div>
-          </div>
+        <div>
+          <label>VIN / Serial No.</label>
+          <input type="text" name="vinSerial" />
+        </div>
 
-          <h2>Section III — Liability</h2>
-          <div class="grid2">
-            <div>
-              <label>Operator Printed Name</label>
-              <input type="text" name="operatorName" />
-            </div>
-            <div>
-              <label>Operator Title</label>
-              <input type="text" name="operatorTitle" />
-            </div>
-            <div>
-              <label>Operator Signature (typed)</label>
-              <input type="text" name="operatorSignature" placeholder="Type full name" />
-            </div>
-            <div>
-              <label>Date</label>
-              <input type="date" name="operatorDate" />
-            </div>
-          </div>
-
-          <h2>Section IV — Transport or support vehicles (Yes / No)</h2>
-          <div id="transportItems"></div>
-
-          <h2>Release</h2>
-          <div class="grid3">
-            <div>
-              <label>No Damage / No Claim</label>
-              <select name="releaseNoDamage">
-                <option value="">—</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-            </div>
-            <div>
-              <label>Miles / Hrs</label>
-              <input type="text" name="releaseMilesHrs" />
-            </div>
-            <div>
-              <label>Date</label>
-              <input type="date" name="releaseDate" />
-            </div>
-            <div>
-              <label>Time</label>
-              <input type="time" name="releaseTime" />
-            </div>
-            <div>
-              <label>Inspector Printed Name</label>
-              <input type="text" name="releaseInspectorName" />
-            </div>
-            <div>
-              <label>Operator Printed Name</label>
-              <input type="text" name="releaseOperatorName" />
-            </div>
-          </div>
-
-          <h2>Section V — Remarks</h2>
-          <label>Describe all unsatisfactory items and identify by line number</label>
-          <textarea name="remarks"></textarea>
-
-          <div class="btns">
-            <button class="primary" type="button" onclick="submitEmail()">Submit (opens email draft)</button>
-            <button type="button" onclick="resetForm()">Clear form</button>
-            <button type="button" onclick="downloadJson()">Download JSON copy</button>
-          </div>
-
-          <p class="note">
-            Submit uses your device’s standard email app (mailto). If the checklist is very long, some email clients may truncate.
-            For guaranteed delivery without relying on a user’s email client, you’d add a small server endpoint to send the email.
-          </p>
+        <div>
+          <label>License No. / State</label>
+          <input type="text" name="licenseState" />
         </div>
       </div>
 
-      <div class="card">
-        <h2>PDF reference (optional embed)</h2>
-        <p class="small">
-          Put the PDF in the same folder as this HTML and name it <code>OF-296_Equipment Checklist.pdf</code>, or change the iframe src below.
+      <details>
+        <summary>View PDF reference</summary>
+        <div class="pdfwrap">
+          <div class="note" style="margin-top:0;">
+            Put the PDF in the same folder as this HTML and name it <code>OF-296_Equipment Checklist.pdf</code>.
+          </div>
+          <iframe src="./OF-296_Equipment%20Checklist.pdf" title="OF-296 PDF"></iframe>
+        </div>
+      </details>
+
+      <div class="items">
+        <h2>Section I — Heavy equipment (Yes / No)</h2>
+        <div id="heavyItems"></div>
+
+        <h2>Section II — Attachments / Pump / Chainsaw / Other (Yes / No)</h2>
+        <label>Specify (optional)</label>
+        <input type="text" name="sectionIISpecify" placeholder="e.g., broom, water truck pump, chainsaw, etc." />
+        <div id="attachItems"></div>
+
+        <h2>Pre-use inspection</h2>
+        <div class="grid3">
+          <div>
+            <label>Status</label>
+            <select name="preUseStatus">
+              <option value="">—</option>
+              <option value="Accepted">Accepted</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+          <div>
+            <label>Miles / Hrs</label>
+            <input type="text" name="preUseMilesHrs" inputmode="decimal" />
+          </div>
+          <div>
+            <label>Date</label>
+            <input type="date" name="preUseDate" />
+          </div>
+          <div>
+            <label>Time</label>
+            <input type="time" name="preUseTime" />
+          </div>
+          <div>
+            <label>Inspector Printed Name</label>
+            <input type="text" name="inspectorName" />
+          </div>
+          <div>
+            <label>Inspector Title</label>
+            <input type="text" name="inspectorTitle" />
+          </div>
+        </div>
+
+        <h2>Section III — Liability</h2>
+        <div class="grid2">
+          <div>
+            <label>Operator Printed Name</label>
+            <input type="text" name="operatorName" />
+          </div>
+          <div>
+            <label>Operator Title</label>
+            <input type="text" name="operatorTitle" />
+          </div>
+          <div>
+            <label>Operator Signature (typed)</label>
+            <input type="text" name="operatorSignature" placeholder="Type full name" />
+          </div>
+          <div>
+            <label>Date</label>
+            <input type="date" name="operatorDate" />
+          </div>
+        </div>
+
+        <h2>Section IV — Transport or support vehicles (Yes / No)</h2>
+        <div id="transportItems"></div>
+
+        <h2>Release</h2>
+        <div class="grid3">
+          <div>
+            <label>No Damage / No Claim</label>
+            <select name="releaseNoDamage">
+              <option value="">—</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div>
+            <label>Miles / Hrs</label>
+            <input type="text" name="releaseMilesHrs" inputmode="decimal" />
+          </div>
+          <div>
+            <label>Date</label>
+            <input type="date" name="releaseDate" />
+          </div>
+          <div>
+            <label>Time</label>
+            <input type="time" name="releaseTime" />
+          </div>
+          <div>
+            <label>Inspector Printed Name</label>
+            <input type="text" name="releaseInspectorName" />
+          </div>
+          <div>
+            <label>Operator Printed Name</label>
+            <input type="text" name="releaseOperatorName" />
+          </div>
+        </div>
+
+        <h2>Section V — Remarks</h2>
+        <label>Describe all unsatisfactory items and identify by line number</label>
+        <textarea name="remarks"></textarea>
+
+        <div class="stickybar">
+          <div class="left">
+            Submit opens an email draft to <strong>paul@archercivilllc.com</strong> using the device’s default mail app.
+          </div>
+          <div class="right">
+            <button class="primary" type="button" onclick="submitEmail()">Submit</button>
+            <button class="danger" type="button" onclick="resetForm()">Clear</button>
+          </div>
+        </div>
+
+        <p class="note">
+          If an email client truncates very long messages, the next upgrade is a server workflow (Power Automate / webhook)
+          that emails and archives the submission automatically.
         </p>
-        <iframe src="./OF-296_Equipment%20Checklist.pdf" title="OF-296 PDF"></iframe>
       </div>
     </div>
   </div>
 
 <script>
-  // Items based on OF-296 (REV. 2-2016) sections shown on the uploaded PDF.
-  // Keep text short here so email stays within typical mailto limits.
+  // Checklist items retained as-is
   const heavy = [
     "1 ROPS / seat belt",
     "2 Gauges & lights",
@@ -291,9 +522,9 @@
       el.innerHTML = `
         <div class="desc">${t}</div>
         <div class="yn" role="group" aria-label="${t}">
-          <label><input type="radio" name="${key}" value="Yes"> Yes</label>
-          <label><input type="radio" name="${key}" value="No"> No</label>
-          <label><input type="radio" name="${key}" value="" checked> —</label>
+          <label class="ynlabel"><input type="radio" name="${key}" value="Yes"> Yes</label>
+          <label class="ynlabel"><input type="radio" name="${key}" value="No"> No</label>
+          <label class="ynlabel"><input type="radio" name="${key}" value="" checked> —</label>
         </div>
       `;
       root.appendChild(el);
@@ -320,12 +551,8 @@
   }
 
   function collectData() {
-    const data = {
-      incidentName: getValue("incidentName"),
-      resourceOrder: getValue("resourceOrder"),
+    return {
       contractorName: getValue("contractorName"),
-      agreementNo: getValue("agreementNo"),
-      expirationDate: getValue("expirationDate"),
       makeModel: getValue("makeModel"),
       equipmentType: getValue("equipmentType"),
       vinSerial: getValue("vinSerial"),
@@ -352,20 +579,15 @@
       releaseOperatorName: getValue("releaseOperatorName"),
       remarks: getValue("remarks")
     };
-    return data;
   }
 
   function formatEmailBody(d) {
     const ynLine = (arr) => arr.map(x => `${x.item}: ${x.val || "—"}`).join("\n");
 
     return [
-      "VEHICLE/HEAVY EQUIPMENT PRE-USE INSPECTION",
+      "VEHICLE / HEAVY EQUIPMENT PRE-USE INSPECTION",
       "",
-      `Incident Name/No.: ${d.incidentName}`,
-      `Resource Order No.: ${d.resourceOrder}`,
       `Contractor Name: ${d.contractorName}`,
-      `Agreement No.: ${d.agreementNo}`,
-      `Expiration Date: ${d.expirationDate}`,
       `Make/Model: ${d.makeModel}`,
       `Equipment Type: ${d.equipmentType}`,
       `VIN/Serial No.: ${d.vinSerial}`,
@@ -409,7 +631,7 @@
     const d = collectData();
 
     const subjectParts = [
-      "Pre-Use Inspection",
+      "G&J Pre-Use Inspection",
       d.makeModel || d.equipmentType || "",
       d.licenseState || "",
       d.preUseDate || ""
@@ -418,30 +640,21 @@
     const subject = subjectParts.join(" | ");
     const body = formatEmailBody(d);
 
-    // mailto relies on the user's default email app (Outlook, Apple Mail, Gmail handler, etc.)
     const mailto = `mailto:paul@archercivilllc.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
   }
 
   function resetForm() {
-    document.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], textarea').forEach(el => el.value = "");
+    // Keep contractorName prefilled/readonly
+    document.querySelectorAll('input[type="text"]:not([name="contractorName"]), input[type="date"], input[type="time"], textarea')
+      .forEach(el => el.value = "");
     document.querySelectorAll('select').forEach(el => el.value = "");
-    // reset radios to "—"
+
     ["heavy","attach","transport"].forEach(prefix => {
       document.querySelectorAll(`input[name^="${prefix}_"]`).forEach(r => {
         if (r.value === "") r.checked = true;
       });
     });
-  }
-
-  function downloadJson() {
-    const d = collectData();
-    const blob = new Blob([JSON.stringify(d, null, 2)], { type: "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `preuse-inspection-${(d.preUseDate || "undated")}.json`;
-    a.click();
-    URL.revokeObjectURL(a.href);
   }
 </script>
 </body>
