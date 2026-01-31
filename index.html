@@ -7,10 +7,13 @@
 
   <style>
     :root{
-      --accent:#283e8a;
+      /* Brand accents */
+      --heading:#00007e;   /* subheadings + radio selection */
+      --btn:#283e8a;       /* buttons */
       --bg:#f6f7fb;
       --card:#ffffff;
-      --ink:#111827;
+      --ink:#000000;       /* title stays black */
+      --text:#111827;
       --muted:#6b7280;
       --line:#e5e7eb;
       --shadow: 0 10px 24px rgba(17,24,39,.08);
@@ -22,11 +25,12 @@
     }
 
     *{ box-sizing:border-box; }
+
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background: var(--bg);
-      color: var(--ink);
+      color: var(--text);
     }
 
     .wrap{
@@ -63,7 +67,7 @@
       font-size: clamp(26px, 6.2vw, 40px);
       line-height: 1.12;
       letter-spacing: -.01em;
-      color: var(--ink);
+      color: var(--ink); /* black */
     }
 
     .card{
@@ -76,25 +80,25 @@
 
     /* Section heading block */
     .section{
-      margin: 30px 0 12px; /* whitespace before each subheading */
+      margin: 30px 0 12px;
     }
-    .section:first-of-type{
-      margin-top: 0;
-    }
+    .section:first-of-type{ margin-top: 0; }
+
     .section .title{
       margin: 0;
       font-size: var(--sectionFont);
-      color: var(--muted);
-      font-weight: 800;
+      color: var(--heading);
+      font-weight: 900;
       letter-spacing: .08em;
       text-transform: uppercase;
       line-height: 1.15;
     }
+
     .section .sub{
       margin-top: 6px;
       font-size: var(--sectionSubFont);
-      color: var(--muted);
-      font-weight: 800;
+      color: var(--heading);
+      font-weight: 900;
       letter-spacing: .06em;
       text-transform: uppercase;
     }
@@ -106,23 +110,25 @@
       margin: 12px 0 6px;
     }
 
+    /* Left-align field responses */
     input[type="text"], input[type="date"], input[type="time"], textarea, select{
       width:100%;
       padding: 12px 12px;
       border-radius: 12px;
       border: 1px solid var(--line);
       background: #fff;
-      color: var(--ink);
+      color: var(--text);
       outline: none;
       min-height: var(--tap);
       font-size: 16px; /* prevents iOS zoom */
+      text-align: left;
     }
-
+    textarea{ min-height: 110px; resize: vertical; }
     input[readonly]{ background:#f9fafb; }
 
-    textarea{
-      min-height: 110px;
-      resize: vertical;
+    /* Ensure radios render in requested color when selected */
+    input[type="radio"]{
+      accent-color: var(--heading); /* #00007e */
     }
 
     .grid2{
@@ -163,7 +169,7 @@
     .desc{
       font-size: var(--itemFont);
       line-height: 1.25rem;
-      color: var(--ink);
+      color: var(--text);
     }
 
     .yn{
@@ -183,6 +189,7 @@
       background: #fff;
       min-height: var(--tap);
       user-select:none;
+      color: var(--text);
     }
 
     .ynlabel input{
@@ -203,7 +210,7 @@
       border-radius: 14px;
       border: 1px solid var(--line);
       background: #fff;
-      color: var(--ink);
+      color: var(--text);
       cursor: pointer;
       font-size: 15px;
     }
@@ -211,8 +218,8 @@
     button.primary{
       border-color: rgba(40,62,138,.35);
       background: rgba(40,62,138,.08);
-      color: var(--accent);
-      font-weight: 800;
+      color: var(--btn);
+      font-weight: 900;
     }
 
     button:active{ transform: translateY(1px); }
@@ -243,7 +250,7 @@
       gap: 10px;
       font-weight: 900;
       font-size: 18px;
-      color: var(--accent);
+      color: var(--heading);
     }
     summary::-webkit-details-marker{ display:none; }
     .pdfwrap{
@@ -256,6 +263,18 @@
       border: 1px solid var(--line);
       border-radius: 12px;
       background:#fff;
+    }
+
+    /* Liability paragraph */
+    .liability-text{
+      margin: 0 0 14px;
+      padding: 12px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.35rem;
     }
 
     /* Sticky submit bar */
@@ -297,34 +316,15 @@
     </div>
 
     <div class="card">
+      <!-- GENERAL EQUIPMENT INFORMATION -->
       <div class="section">
-        <div class="title">General equipment information</div>
+        <div class="title">GENERAL EQUIPMENT INFORMATION</div>
       </div>
 
       <div class="grid2">
         <div>
-          <label>Contractor Name</label>
-          <input type="text" name="contractorName" value="G&J Heavy Haul" readonly />
-        </div>
-
-        <div>
-          <label>Make / Model</label>
-          <input type="text" name="makeModel" />
-        </div>
-
-        <div>
-          <label>Equipment Type</label>
-          <input type="text" name="equipmentType" />
-        </div>
-
-        <div>
-          <label>VIN / Serial No.</label>
-          <input type="text" name="vinSerial" />
-        </div>
-
-        <div>
-          <label>License No. / State</label>
-          <input type="text" name="licenseState" />
+          <label>Equipment No.</label>
+          <input type="text" name="equipmentNo" />
         </div>
       </div>
 
@@ -339,21 +339,7 @@
       </details>
 
       <div class="items">
-        <div class="section">
-          <div class="title">SECTION I — HEAVY EQUIPMENT</div>
-          <div class="sub">SAFE TO OPERATE?</div>
-        </div>
-        <div id="heavyItems"></div>
-
-        <div class="section">
-          <div class="title">SECTION II — ATTACHMENTS / PUMP / CHAINSAW / OTHER</div>
-          <div class="sub">SAFE TO OPERATE?</div>
-        </div>
-
-        <label>Specify (optional)</label>
-        <input type="text" name="sectionIISpecify" placeholder="e.g., broom, water truck pump, chainsaw, etc." />
-        <div id="attachItems"></div>
-
+        <!-- PRE-USE INSPECTION (moved up; removed inspector name/title) -->
         <div class="section">
           <div class="title">PRE-USE INSPECTION</div>
         </div>
@@ -383,28 +369,40 @@
             <label>Time</label>
             <input type="time" name="preUseTime" />
           </div>
-          <div>
-            <label>Inspector Printed Name</label>
-            <input type="text" name="inspectorName" />
-          </div>
-          <div>
-            <label>Inspector Title</label>
-            <input type="text" name="inspectorTitle" />
-          </div>
         </div>
 
+        <!-- SECTION I -->
+        <div class="section">
+          <div class="title">SECTION I — HEAVY EQUIPMENT</div>
+          <div class="sub">SAFE TO OPERATE?</div>
+        </div>
+        <div id="heavyItems"></div>
+
+        <!-- SECTION II -->
+        <div class="section">
+          <div class="title">SECTION II — ATTACHMENTS / PUMP / CHAINSAW / OTHER</div>
+          <div class="sub">SAFE TO OPERATE?</div>
+        </div>
+
+        <label>Specify (optional)</label>
+        <input type="text" name="sectionIISpecify" placeholder="e.g., broom, water truck pump, chainsaw, etc." />
+        <div id="attachItems"></div>
+
+        <!-- SECTION III — LIABILITY (add language; remove operator title field) -->
         <div class="section">
           <div class="title">SECTION III — LIABILITY</div>
         </div>
+
+        <p class="liability-text">
+          The purpose of this checklist is to document pre-existing vehicle/equipment condition and to determine
+          suitability for incident use. I hereby acknowledge full responsibility and liability for the operation and
+          mechanical condition of the vehicle/equipment described herein.
+        </p>
 
         <div class="grid2">
           <div>
             <label>Operator Printed Name</label>
             <input type="text" name="operatorName" />
-          </div>
-          <div>
-            <label>Operator Title</label>
-            <input type="text" name="operatorTitle" />
           </div>
           <div>
             <label>Operator Signature (typed)</label>
@@ -416,12 +414,22 @@
           </div>
         </div>
 
+        <!-- SECTION IV -->
         <div class="section">
           <div class="title">SECTION IV — TRANSPORT OR SUPPORT VEHICLES</div>
           <div class="sub">SAFE TO OPERATE?</div>
         </div>
         <div id="transportItems"></div>
 
+        <!-- SECTION V -->
+        <div class="section">
+          <div class="title">SECTION V — REMARKS</div>
+        </div>
+
+        <label>Describe all unsatisfactory items and identify by line number</label>
+        <textarea name="remarks"></textarea>
+
+        <!-- RELEASE (moved after remarks; remove inspector name; add operator signature typed) -->
         <div class="section">
           <div class="title">RELEASE</div>
         </div>
@@ -448,21 +456,14 @@
             <input type="time" name="releaseTime" />
           </div>
           <div>
-            <label>Inspector Printed Name</label>
-            <input type="text" name="releaseInspectorName" />
-          </div>
-          <div>
             <label>Operator Printed Name</label>
             <input type="text" name="releaseOperatorName" />
           </div>
+          <div>
+            <label>Operator Signature (typed)</label>
+            <input type="text" name="releaseOperatorSignature" placeholder="Type full name" />
+          </div>
         </div>
-
-        <div class="section">
-          <div class="title">SECTION V — REMARKS</div>
-        </div>
-
-        <label>Describe all unsatisfactory items and identify by line number</label>
-        <textarea name="remarks"></textarea>
 
         <div class="stickybar">
           <div class="left">
@@ -577,32 +578,31 @@
 
   function collectData() {
     return {
-      contractorName: getValue("contractorName"),
-      makeModel: getValue("makeModel"),
-      equipmentType: getValue("equipmentType"),
-      vinSerial: getValue("vinSerial"),
-      licenseState: getValue("licenseState"),
-      sectionI: heavy.map((t, i) => ({ item: t, val: getRadioVal(`heavy_${i+1}`) })),
-      sectionIISpecify: getValue("sectionIISpecify"),
-      sectionII: attach.map((t, i) => ({ item: t, val: getRadioVal(`attach_${i+1}`) })),
+      equipmentNo: getValue("equipmentNo"),
+
       preUseStatus: getValue("preUseStatus"),
       preUseMilesHrs: getValue("preUseMilesHrs"),
       preUseDate: getValue("preUseDate"),
       preUseTime: getValue("preUseTime"),
-      inspectorName: getValue("inspectorName"),
-      inspectorTitle: getValue("inspectorTitle"),
+
+      sectionI: heavy.map((t, i) => ({ item: t, val: getRadioVal(`heavy_${i+1}`) })),
+      sectionIISpecify: getValue("sectionIISpecify"),
+      sectionII: attach.map((t, i) => ({ item: t, val: getRadioVal(`attach_${i+1}`) })),
+
       operatorName: getValue("operatorName"),
-      operatorTitle: getValue("operatorTitle"),
       operatorSignature: getValue("operatorSignature"),
       operatorDate: getValue("operatorDate"),
+
       sectionIV: transport.map((t, i) => ({ item: t, val: getRadioVal(`transport_${i+1}`) })),
+
+      remarks: getValue("remarks"),
+
       releaseNoDamage: getValue("releaseNoDamage"),
       releaseMilesHrs: getValue("releaseMilesHrs"),
       releaseDate: getValue("releaseDate"),
       releaseTime: getValue("releaseTime"),
-      releaseInspectorName: getValue("releaseInspectorName"),
       releaseOperatorName: getValue("releaseOperatorName"),
-      remarks: getValue("remarks")
+      releaseOperatorSignature: getValue("releaseOperatorSignature")
     };
   }
 
@@ -612,11 +612,13 @@
     return [
       "VEHICLE / HEAVY EQUIPMENT PRE-USE INSPECTION",
       "",
-      `Contractor Name: ${d.contractorName}`,
-      `Make/Model: ${d.makeModel}`,
-      `Equipment Type: ${d.equipmentType}`,
-      `VIN/Serial No.: ${d.vinSerial}`,
-      `License No./State: ${d.licenseState}`,
+      `Equipment No.: ${d.equipmentNo}`,
+      "",
+      "PRE-USE INSPECTION",
+      `Status: ${d.preUseStatus}`,
+      `Miles/Hrs: ${d.preUseMilesHrs}`,
+      `Date: ${d.preUseDate}`,
+      `Time: ${d.preUseTime}`,
       "",
       "SECTION I — HEAVY EQUIPMENT (SAFE TO OPERATE? Yes / No / N/A)",
       line(d.sectionI),
@@ -624,31 +626,25 @@
       `SECTION II — ATTACHMENTS/OTHER (SAFE TO OPERATE? Yes / No / N/A) (Specify): ${d.sectionIISpecify}`,
       line(d.sectionII),
       "",
-      "PRE-USE INSPECTION",
-      `Status: ${d.preUseStatus}`,
-      `Miles/Hrs: ${d.preUseMilesHrs}`,
-      `Date: ${d.preUseDate}`,
-      `Time: ${d.preUseTime}`,
-      `Inspector: ${d.inspectorName} (${d.inspectorTitle})`,
-      "",
       "SECTION III — LIABILITY",
-      `Operator: ${d.operatorName} (${d.operatorTitle})`,
-      `Signature (typed): ${d.operatorSignature}`,
+      "The purpose of this checklist is to document pre-existing vehicle/equipment condition and to determine suitability for incident use. I hereby acknowledge full responsibility and liability for the operation and mechanical condition of the vehicle/equipment described herein.",
+      `Operator Printed Name: ${d.operatorName}`,
+      `Operator Signature (typed): ${d.operatorSignature}`,
       `Date: ${d.operatorDate}`,
       "",
       "SECTION IV — TRANSPORT/SUPPORT VEHICLES (SAFE TO OPERATE? Yes / No / N/A)",
       line(d.sectionIV),
+      "",
+      "SECTION V — REMARKS",
+      d.remarks || "—",
       "",
       "RELEASE",
       `No Damage/No Claim: ${d.releaseNoDamage}`,
       `Miles/Hrs: ${d.releaseMilesHrs}`,
       `Date: ${d.releaseDate}`,
       `Time: ${d.releaseTime}`,
-      `Inspector: ${d.releaseInspectorName}`,
-      `Operator: ${d.releaseOperatorName}`,
-      "",
-      "REMARKS",
-      d.remarks || "—"
+      `Operator Printed Name: ${d.releaseOperatorName}`,
+      `Operator Signature (typed): ${d.releaseOperatorSignature}`
     ].join("\n");
   }
 
@@ -657,8 +653,7 @@
 
     const subjectParts = [
       "G&J Pre-Use Inspection",
-      d.makeModel || d.equipmentType || "",
-      d.licenseState || "",
+      d.equipmentNo || "",
       d.preUseDate || ""
     ].filter(Boolean);
 
