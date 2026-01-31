@@ -7,18 +7,22 @@
 
   <style>
     :root{
-      /* Brand accents */
+      /* COLORS */
       --heading:#00007e;   /* subheadings + radio selection */
       --btn:#283e8a;       /* buttons */
       --bg:#f6f7fb;
       --card:#ffffff;
-      --ink:#000000;       /* title stays black */
+      --ink:#000000;       /* title */
       --text:#111827;
       --muted:#6b7280;
       --line:#e5e7eb;
+
+      /* UI */
       --shadow: 0 10px 24px rgba(17,24,39,.08);
       --radius:16px;
       --tap:48px;
+
+      /* TYPE */
       --itemFont: 14px;
       --sectionFont: calc(var(--itemFont) * 1.6);
       --sectionSubFont: calc(var(--sectionFont) * 0.72);
@@ -40,12 +44,11 @@
       padding-bottom: calc(14px + env(safe-area-inset-bottom));
     }
 
-    /* Centered logo + title */
+    /* HEADER */
     .brandbar{
       display:flex;
       flex-direction: column;
       align-items:center;
-      justify-content:center;
       gap: 10px;
       text-align:center;
       padding: 18px 14px;
@@ -59,7 +62,6 @@
     .brandbar img{
       width: min(260px, 70vw);
       height: auto;
-      object-fit: contain;
     }
 
     h1{
@@ -67,7 +69,7 @@
       font-size: clamp(26px, 6.2vw, 40px);
       line-height: 1.12;
       letter-spacing: -.01em;
-      color: var(--ink); /* black */
+      color: var(--ink);
     }
 
     .card{
@@ -78,613 +80,403 @@
       padding: 14px;
     }
 
-    /* Section heading block */
+    /* SECTION HEADERS */
     .section{
       margin: 30px 0 12px;
     }
-    .section:first-of-type{ margin-top: 0; }
+    .section:first-of-type{ margin-top:0; }
 
     .section .title{
-      margin: 0;
       font-size: var(--sectionFont);
-      color: var(--heading);
       font-weight: 900;
       letter-spacing: .08em;
       text-transform: uppercase;
-      line-height: 1.15;
+      color: var(--heading);
     }
 
     .section .sub{
       margin-top: 6px;
       font-size: var(--sectionSubFont);
-      color: var(--heading);
       font-weight: 900;
       letter-spacing: .06em;
       text-transform: uppercase;
+      color: var(--heading);
     }
 
     label{
-      display:block;
       font-size: 12px;
       color: var(--muted);
       margin: 12px 0 6px;
+      display:block;
     }
 
-    /* Left-align field responses */
-    input[type="text"], input[type="date"], input[type="time"], textarea, select{
+    /* INPUTS – force identical width + left alignment (iOS safe) */
+    input,
+    select,
+    textarea{
+      display:block;
       width:100%;
-      padding: 12px 12px;
+      max-width:100%;
+      min-height: var(--tap);
+      padding: 12px;
       border-radius: 12px;
       border: 1px solid var(--line);
-      background: #fff;
+      background:#fff;
       color: var(--text);
-      outline: none;
-      min-height: var(--tap);
-      font-size: 16px; /* prevents iOS zoom */
-      text-align: left;
+      font-size:16px; /* prevent iOS zoom */
+      text-align:left;
     }
-    textarea{ min-height: 110px; resize: vertical; }
+
+    textarea{ min-height:110px; resize:vertical; }
+
     input[readonly]{ background:#f9fafb; }
 
-    /* Ensure radios render in requested color when selected */
-    input[type="radio"]{
-      accent-color: var(--heading); /* #00007e */
+    /* iOS date/time left-align + width fix */
+    input[type="date"],
+    input[type="time"]{
+      -webkit-appearance:none;
+      appearance:none;
     }
 
+    input[type="date"]::-webkit-date-and-time-value,
+    input[type="time"]::-webkit-date-and-time-value{
+      text-align:left;
+    }
+
+    input[type="date"]::-webkit-datetime-edit,
+    input[type="time"]::-webkit-datetime-edit{
+      text-align:left;
+    }
+
+    /* GRID */
     .grid2{
       display:grid;
-      gap: 10px;
       grid-template-columns: 1fr;
+      gap:10px;
     }
-    @media (min-width: 720px){
-      .grid2{ grid-template-columns: 1fr 1fr; }
-    }
-
     .grid3{
       display:grid;
-      gap: 10px;
       grid-template-columns: 1fr;
+      gap:10px;
     }
-    @media (min-width: 900px){
-      .grid3{ grid-template-columns: 1fr 1fr 1fr; }
+    @media(min-width:900px){
+      .grid3{ grid-template-columns:1fr 1fr 1fr; }
     }
 
-    .items{
-      border-top: 1px solid var(--line);
-      margin-top: 16px;
-      padding-top: 6px;
-    }
+    .grid2 > div,
+    .grid3 > div{ min-width:0; }
+
+    /* RADIO GROUPS */
+    input[type="radio"]{ accent-color: var(--heading); }
 
     .item{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      margin-bottom: 10px;
-      background: #fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:10px;
     }
 
     .desc{
-      font-size: var(--itemFont);
-      line-height: 1.25rem;
-      color: var(--text);
+      font-size:var(--itemFont);
+      margin-bottom:8px;
     }
 
     .yn{
       display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
     .ynlabel{
       display:flex;
       align-items:center;
-      gap: 8px;
-      padding: 10px 12px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: #fff;
-      min-height: var(--tap);
-      user-select:none;
-      color: var(--text);
+      gap:8px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      min-height:var(--tap);
     }
 
-    .ynlabel input{
-      width: 18px;
-      height: 18px;
+    /* SPECIFY spacing fix */
+    input[name="sectionIISpecify"]{
+      margin-bottom:10px;
     }
 
-    .btns{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    button{
-      min-height: var(--tap);
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: #fff;
-      color: var(--text);
-      cursor: pointer;
-      font-size: 15px;
-    }
-
-    button.primary{
-      border-color: rgba(40,62,138,.35);
-      background: rgba(40,62,138,.08);
-      color: var(--btn);
-      font-weight: 900;
-    }
-
-    button:active{ transform: translateY(1px); }
-
-    .note{
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.25rem;
-      margin-top: 10px;
-    }
-
-    /* PDF behind button */
+    /* PDF */
     details{
-      margin-top: 22px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: #fff;
+      margin-top:22px;
+      border:1px solid var(--line);
+      border-radius:14px;
       overflow:hidden;
     }
     summary{
-      list-style:none;
+      padding:14px;
+      text-align:center;
+      font-weight:900;
+      font-size:18px;
+      color:var(--heading);
       cursor:pointer;
-      padding: 14px 14px;
-      min-height: var(--tap);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap: 10px;
-      font-weight: 900;
-      font-size: 18px;
-      color: var(--heading);
     }
     summary::-webkit-details-marker{ display:none; }
-    .pdfwrap{
-      border-top: 1px solid var(--line);
-      padding: 10px;
-    }
+
     iframe{
       width:100%;
-      height: 70vh;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background:#fff;
+      height:70vh;
+      border:0;
     }
 
-    /* Liability paragraph */
+    /* LIABILITY BOX */
     .liability-text{
-      margin: 0 0 14px;
-      padding: 12px 12px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: #fff;
-      color: var(--text);
-      font-size: 14px;
-      line-height: 1.35rem;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:12px;
+      font-size:14px;
+      line-height:1.35rem;
     }
 
-    /* Sticky submit bar */
+    /* STICKY SUBMIT */
     .stickybar{
-      position: sticky;
-      bottom: 0;
-      margin-top: 14px;
-      padding: 10px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(8px);
-      box-shadow: var(--shadow);
+      position:sticky;
+      bottom:0;
+      margin-top:16px;
+      padding:10px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(255,255,255,.95);
       display:flex;
-      gap: 10px;
-      justify-content: space-between;
+      justify-content:space-between;
       align-items:center;
+      gap:10px;
     }
+
     .stickybar .left{
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.1rem;
+      font-size:12px;
+      color:var(--muted);
     }
-    .stickybar .right{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+
+    button{
+      min-height:var(--tap);
+      padding:12px 18px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    button.primary{
+      background:rgba(40,62,138,.08);
+      color:var(--btn);
+      border-color:rgba(40,62,138,.35);
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="brandbar">
-      <!-- Put the logo file in the same folder and name it exactly "gjhh-logo.png" -->
-      <img src="./gjhh-logo.png" alt="G&J Heavy Haul logo">
-      <h1>Vehicle / Heavy Equipment Pre-Use Inspection Checklist</h1>
-    </div>
+<div class="wrap">
 
-    <div class="card">
-      <!-- GENERAL EQUIPMENT INFORMATION -->
-      <div class="section">
-        <div class="title">GENERAL EQUIPMENT INFORMATION</div>
-      </div>
-
-      <div class="grid2">
-        <div>
-          <label>Equipment No.</label>
-          <input type="text" name="equipmentNo" />
-        </div>
-      </div>
-
-      <details>
-        <summary>View PDF reference</summary>
-        <div class="pdfwrap">
-          <div class="note" style="margin-top:0;">
-            Put the PDF in the same folder as this HTML and name it <code>OF-296_Equipment Checklist.pdf</code>.
-          </div>
-          <iframe src="./OF-296_Equipment%20Checklist.pdf" title="OF-296 PDF"></iframe>
-        </div>
-      </details>
-
-      <div class="items">
-        <!-- PRE-USE INSPECTION (moved up; removed inspector name/title) -->
-        <div class="section">
-          <div class="title">PRE-USE INSPECTION</div>
-        </div>
-
-        <div class="btns" style="margin-top:0;">
-          <button class="primary" type="button" onclick="stampNow()">Set Date/Time to Now</button>
-        </div>
-
-        <div class="grid3">
-          <div>
-            <label>Status</label>
-            <select name="preUseStatus">
-              <option value="">—</option>
-              <option value="Accepted">Accepted</option>
-              <option value="Rejected">Rejected</option>
-            </select>
-          </div>
-          <div>
-            <label>Miles / Hrs</label>
-            <input type="text" name="preUseMilesHrs" inputmode="decimal" />
-          </div>
-          <div>
-            <label>Date</label>
-            <input type="date" name="preUseDate" />
-          </div>
-          <div>
-            <label>Time</label>
-            <input type="time" name="preUseTime" />
-          </div>
-        </div>
-
-        <!-- SECTION I -->
-        <div class="section">
-          <div class="title">SECTION I — HEAVY EQUIPMENT</div>
-          <div class="sub">SAFE TO OPERATE?</div>
-        </div>
-        <div id="heavyItems"></div>
-
-        <!-- SECTION II -->
-        <div class="section">
-          <div class="title">SECTION II — ATTACHMENTS / PUMP / CHAINSAW / OTHER</div>
-          <div class="sub">SAFE TO OPERATE?</div>
-        </div>
-
-        <label>Specify (optional)</label>
-        <input type="text" name="sectionIISpecify" placeholder="e.g., broom, water truck pump, chainsaw, etc." />
-        <div id="attachItems"></div>
-
-        <!-- SECTION III — LIABILITY (add language; remove operator title field) -->
-        <div class="section">
-          <div class="title">SECTION III — LIABILITY</div>
-        </div>
-
-        <p class="liability-text">
-          The purpose of this checklist is to document pre-existing vehicle/equipment condition and to determine
-          suitability for incident use. I hereby acknowledge full responsibility and liability for the operation and
-          mechanical condition of the vehicle/equipment described herein.
-        </p>
-
-        <div class="grid2">
-          <div>
-            <label>Operator Printed Name</label>
-            <input type="text" name="operatorName" />
-          </div>
-          <div>
-            <label>Operator Signature (typed)</label>
-            <input type="text" name="operatorSignature" placeholder="Type full name" />
-          </div>
-          <div>
-            <label>Date</label>
-            <input type="date" name="operatorDate" />
-          </div>
-        </div>
-
-        <!-- SECTION IV -->
-        <div class="section">
-          <div class="title">SECTION IV — TRANSPORT OR SUPPORT VEHICLES</div>
-          <div class="sub">SAFE TO OPERATE?</div>
-        </div>
-        <div id="transportItems"></div>
-
-        <!-- SECTION V -->
-        <div class="section">
-          <div class="title">SECTION V — REMARKS</div>
-        </div>
-
-        <label>Describe all unsatisfactory items and identify by line number</label>
-        <textarea name="remarks"></textarea>
-
-        <!-- RELEASE (moved after remarks; remove inspector name; add operator signature typed) -->
-        <div class="section">
-          <div class="title">RELEASE</div>
-        </div>
-
-        <div class="grid3">
-          <div>
-            <label>No Damage / No Claim</label>
-            <select name="releaseNoDamage">
-              <option value="">—</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </div>
-          <div>
-            <label>Miles / Hrs</label>
-            <input type="text" name="releaseMilesHrs" inputmode="decimal" />
-          </div>
-          <div>
-            <label>Date</label>
-            <input type="date" name="releaseDate" />
-          </div>
-          <div>
-            <label>Time</label>
-            <input type="time" name="releaseTime" />
-          </div>
-          <div>
-            <label>Operator Printed Name</label>
-            <input type="text" name="releaseOperatorName" />
-          </div>
-          <div>
-            <label>Operator Signature (typed)</label>
-            <input type="text" name="releaseOperatorSignature" placeholder="Type full name" />
-          </div>
-        </div>
-
-        <div class="stickybar">
-          <div class="left">
-            Submit opens an email draft to salud.madrigal@gjheavyhaul.com using the device’s default mail app.
-          </div>
-          <div class="right">
-            <button class="primary" type="button" onclick="submitEmail()">Submit</button>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="brandbar">
+    <img src="./gjhh-logo.png" alt="G&J Heavy Haul logo">
+    <h1>Vehicle / Heavy Equipment Pre-Use Inspection Checklist</h1>
   </div>
 
-<script>
-  // Full item language aligned to OF-296 (REV. 2-2016)
+  <div class="card">
 
+    <!-- GENERAL EQUIPMENT INFO -->
+    <div class="section">
+      <div class="title">GENERAL EQUIPMENT INFORMATION</div>
+    </div>
+
+    <label>Equipment No.</label>
+    <input type="text" name="equipmentNo">
+
+    <details>
+      <summary>View PDF Reference</summary>
+      <iframe src="./OF-296_Equipment%20Checklist.pdf"></iframe>
+    </details>
+
+    <!-- PRE-USE INSPECTION -->
+    <div class="section">
+      <div class="title">PRE-USE INSPECTION</div>
+    </div>
+
+    <button class="primary" onclick="stampNow()">Set Date/Time to Now</button>
+
+    <div class="grid3">
+      <div>
+        <label>Status</label>
+        <select name="preUseStatus">
+          <option value="">—</option>
+          <option>Accepted</option>
+          <option>Rejected</option>
+        </select>
+      </div>
+      <div>
+        <label>Miles / Hrs</label>
+        <input type="text" name="preUseMilesHrs">
+      </div>
+      <div>
+        <label>Date</label>
+        <input type="date" name="preUseDate">
+      </div>
+      <div>
+        <label>Time</label>
+        <input type="time" name="preUseTime">
+      </div>
+    </div>
+
+    <!-- SECTION I -->
+    <div class="section">
+      <div class="title">SECTION I — HEAVY EQUIPMENT</div>
+      <div class="sub">SAFE TO OPERATE?</div>
+    </div>
+    <div id="heavyItems"></div>
+
+    <!-- SECTION II -->
+    <div class="section">
+      <div class="title">SECTION II — ATTACHMENTS / PUMP / CHAINSAW / OTHER</div>
+      <div class="sub">SAFE TO OPERATE?</div>
+    </div>
+
+    <label>Specify (optional)</label>
+    <input type="text" name="sectionIISpecify">
+    <div id="attachItems"></div>
+
+    <!-- SECTION III -->
+    <div class="section">
+      <div class="title">SECTION III — LIABILITY</div>
+    </div>
+
+    <div class="liability-text">
+      The purpose of this checklist is to document pre-existing vehicle/equipment condition and to determine suitability for incident use.
+      I hereby acknowledge full responsibility and liability for the operation and mechanical condition of the vehicle/equipment described herein.
+    </div>
+
+    <label>Operator Printed Name</label>
+    <input type="text" name="operatorName">
+
+    <label>Operator Signature (typed)</label>
+    <input type="text" name="operatorSignature">
+
+    <label>Date</label>
+    <input type="date" name="operatorDate">
+
+    <!-- SECTION IV -->
+    <div class="section">
+      <div class="title">SECTION IV — TRANSPORT OR SUPPORT VEHICLES</div>
+      <div class="sub">SAFE TO OPERATE?</div>
+    </div>
+    <div id="transportItems"></div>
+
+    <!-- SECTION V -->
+    <div class="section">
+      <div class="title">SECTION V — REMARKS</div>
+    </div>
+
+    <textarea name="remarks"></textarea>
+
+    <!-- RELEASE -->
+    <div class="section">
+      <div class="title">RELEASE</div>
+    </div>
+
+    <div class="grid3">
+      <div>
+        <label>No Damage / No Claim</label>
+        <select name="releaseNoDamage">
+          <option value="">—</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+      <div>
+        <label>Miles / Hrs</label>
+        <input type="text" name="releaseMilesHrs">
+      </div>
+      <div>
+        <label>Date</label>
+        <input type="date" name="releaseDate">
+      </div>
+      <div>
+        <label>Time</label>
+        <input type="time" name="releaseTime">
+      </div>
+      <div>
+        <label>Operator Printed Name</label>
+        <input type="text" name="releaseOperatorName">
+      </div>
+      <div>
+        <label>Operator Signature (typed)</label>
+        <input type="text" name="releaseOperatorSignature">
+      </div>
+    </div>
+
+    <div class="stickybar">
+      <div class="left">
+        Submit opens an email draft to salud.madrigal@gjheavyhaul.com using the device’s default mail app.
+      </div>
+      <button class="primary" onclick="submitEmail()">Submit</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
   const heavy = [
-    "1. ROPS, roll-over protection system: Manufacturer-approved system secured to mainframe of tractor. Must include approved seat belts. *",
-    "2. Gauges and lights: mounted and function properly. *",
-    "3. Battery: check for corrosion, loose terminals, and hold downs.",
-    "4. Engine running: check oil pressure, knocks and leaks.",
-    "5. Sweeps, deflectors, safety screens (glass). *",
-    "6. Steering components: tight, free of play. *",
-    "7. Brakes: damaged, worn or out of adjustment. *",
-    "8. Exhaust system: equipped with a USFS-qualified spark arrester unless turbocharged.",
-    "9. Fuel system: free of leaks and damage. *",
-    "10. Cooling system: full, free of leaks and damage. *",
-    "11. Fan and fan belts: check for proper tension. No fraying/cracks.",
-    "12. Engine support, equalizer bar, springs, main springs: check shackle bolts, shifted spring leaf.",
-    "13. Belly plate, radiator guards: securely mounted and free from debris. *",
-    "14. Final drive, transmission and differential: check for dripping.",
-    "15. Sprocket and idlers: crack in spokes, sharp sprocket teeth, no welds.",
-    "16. Tracks and rollers: no broken pads, loose rollers, broken flanges. *",
-    "17. Dozer and assembly: trunnion bolts missing, cracks. *",
-    "18. Rear hitch (drawbar): serviceable, safe.",
-    "19. Body and cab condition: describe dents and damage.",
-    "20. Equipment cleanliness: all areas free of flammable materials, noxious weeds, and invasive species.",
-    "21. All hydraulic attachments: operate smoothly and all cylinders hold at extension; hose, lines, and pumps have no excessive wear and/or leaks.",
-    "22. Backup or travel alarm (minimum 87 dbl). *",
-    "23. Oil level and condition: full and clean."
+    "1. ROPS, roll-over protection system: Manufacturer-approved system secured to mainframe of tractor. Must include approved seat belts.",
+    "2. Gauges and lights: mounted and function properly.",
+    "3. Battery: check for corrosion, loose terminals, and hold downs."
   ];
 
   const attach = [
     "1. No missing/broken components, no loose hardware.",
-    "2. Sufficient fluid levels (oil, coolant, etc.).",
-    "3. Cutting bar: straight, chain in good condition.",
-    "4. Cutting teeth: sharp, good repair.",
-    "5. Pump: builds pressure, no water or oil leaks.",
-    "6. Engine starts, idles, and shuts off with switch."
+    "2. Sufficient fluid levels (oil, coolant, etc.)."
   ];
 
   const transport = [
-    "1. “DOT” or CVSA inspection in the last 12 months (if required). *",
-    "2. Gauges and lights: mounted and function properly. *",
-    "3. Seat belts: operate properly for each seating position. *",
-    "4. Glass and mirrors, no cracks in vision. *",
-    "5. Wipers, washers, and horn operate properly. *",
-    "6. Clutch pedal: proper adjustment (if applicable).",
-    "7. Cooling system: full, free of leaks and damage.",
-    "8. Fluid levels (e.g. oil) and condition: full and clean.",
-    "9. Battery: check for corrosion, loose terminals and hold downs.",
-    "10. Fuel system: free of leaks and damage. *",
-    "11. Electrical system: alternator and starter work. *",
-    "12. Engine running: check oil pressure, knocks, and leaks.",
-    "13. Transmission: check for leaks.",
-    "14. Steering components: tight, free of play. *",
-    "15. Brakes: damaged, worn or out of adjustment. *",
-    "16. 4-Wheel drive: check transfer case, leaks (if applicable).",
-    "17. Drive line U-joints: check for looseness.",
-    "18. Suspension systems: springs, shocks, other. *",
-    "19. Differential(s): check for leaks.",
-    "20. Exhaust system: no leaks under cab or before turbo. *",
-    "21. Frame condition, body/bed properly attached. *",
-    "22. Tires/wheels (including spare and all changing equipment): sufficient load rating, tread depth, no major damage. *",
-    "23. Body and interior condition: describe and locate damage (see supplemental information on back).",
-    "24. Emergency equipment required. * (Fire extinguisher / Spare fuses / Reflectors)",
-    "25. Operator(s) properly licensed. †"
+    "1. DOT / CVSA inspection current (if required).",
+    "2. Gauges and lights operate properly."
   ];
 
-  function renderYesNoNA(containerId, items, prefix) {
-    const root = document.getElementById(containerId);
-    items.forEach((t, idx) => {
-      const key = `${prefix}_${idx+1}`;
-      const el = document.createElement("div");
-      el.className = "item";
-      el.innerHTML = `
-        <div class="desc">${t}</div>
-        <div class="yn" role="group" aria-label="${t}">
-          <label class="ynlabel"><input type="radio" name="${key}" value="Yes"> Yes</label>
-          <label class="ynlabel"><input type="radio" name="${key}" value="No"> No</label>
-          <label class="ynlabel"><input type="radio" name="${key}" value="" checked> N/A</label>
-        </div>
-      `;
-      root.appendChild(el);
+  function render(container, items, prefix){
+    const el = document.getElementById(container);
+    items.forEach((t,i)=>{
+      el.innerHTML += `
+        <div class="item">
+          <div class="desc">${t}</div>
+          <div class="yn">
+            <label class="ynlabel"><input type="radio" name="${prefix}${i}" value="Yes">Yes</label>
+            <label class="ynlabel"><input type="radio" name="${prefix}${i}" value="No">No</label>
+            <label class="ynlabel"><input type="radio" name="${prefix}${i}" value="" checked>N/A</label>
+          </div>
+        </div>`;
     });
   }
 
-  renderYesNoNA("heavyItems", heavy, "heavy");
-  renderYesNoNA("attachItems", attach, "attach");
-  renderYesNoNA("transportItems", transport, "transport");
+  render("heavyItems", heavy, "h");
+  render("attachItems", attach, "a");
+  render("transportItems", transport, "t");
 
-  function getValue(name) {
-    const el = document.querySelector(`[name="${name}"]`);
-    if (!el) return "";
-    return (el.value || "").trim();
+  function stampNow(){
+    const d = new Date();
+    const date = d.toISOString().slice(0,10);
+    const time = d.toTimeString().slice(0,5);
+    ["preUseDate","operatorDate","releaseDate"].forEach(n=>{
+      const e=document.querySelector(`[name="${n}"]`);
+      if(e) e.value=date;
+    });
+    ["preUseTime","releaseTime"].forEach(n=>{
+      const e=document.querySelector(`[name="${n}"]`);
+      if(e) e.value=time;
+    });
   }
 
-  function getRadioVal(groupName) {
-    const sel = document.querySelector(`input[name="${groupName}"]:checked`);
-    return sel ? sel.value : "";
-  }
-
-  function collectData() {
-    return {
-      equipmentNo: getValue("equipmentNo"),
-
-      preUseStatus: getValue("preUseStatus"),
-      preUseMilesHrs: getValue("preUseMilesHrs"),
-      preUseDate: getValue("preUseDate"),
-      preUseTime: getValue("preUseTime"),
-
-      sectionI: heavy.map((t, i) => ({ item: t, val: getRadioVal(`heavy_${i+1}`) })),
-      sectionIISpecify: getValue("sectionIISpecify"),
-      sectionII: attach.map((t, i) => ({ item: t, val: getRadioVal(`attach_${i+1}`) })),
-
-      operatorName: getValue("operatorName"),
-      operatorSignature: getValue("operatorSignature"),
-      operatorDate: getValue("operatorDate"),
-
-      sectionIV: transport.map((t, i) => ({ item: t, val: getRadioVal(`transport_${i+1}`) })),
-
-      remarks: getValue("remarks"),
-
-      releaseNoDamage: getValue("releaseNoDamage"),
-      releaseMilesHrs: getValue("releaseMilesHrs"),
-      releaseDate: getValue("releaseDate"),
-      releaseTime: getValue("releaseTime"),
-      releaseOperatorName: getValue("releaseOperatorName"),
-      releaseOperatorSignature: getValue("releaseOperatorSignature")
-    };
-  }
-
-  function formatEmailBody(d) {
-    const line = (arr) => arr.map(x => `${x.item} => ${x.val || "N/A"}`).join("\n");
-
-    return [
-      "VEHICLE / HEAVY EQUIPMENT PRE-USE INSPECTION",
-      "",
-      `Equipment No.: ${d.equipmentNo}`,
-      "",
-      "PRE-USE INSPECTION",
-      `Status: ${d.preUseStatus}`,
-      `Miles/Hrs: ${d.preUseMilesHrs}`,
-      `Date: ${d.preUseDate}`,
-      `Time: ${d.preUseTime}`,
-      "",
-      "SECTION I — HEAVY EQUIPMENT (SAFE TO OPERATE? Yes / No / N/A)",
-      line(d.sectionI),
-      "",
-      `SECTION II — ATTACHMENTS/OTHER (SAFE TO OPERATE? Yes / No / N/A) (Specify): ${d.sectionIISpecify}`,
-      line(d.sectionII),
-      "",
-      "SECTION III — LIABILITY",
-      "The purpose of this checklist is to document pre-existing vehicle/equipment condition and to determine suitability for incident use. I hereby acknowledge full responsibility and liability for the operation and mechanical condition of the vehicle/equipment described herein.",
-      `Operator Printed Name: ${d.operatorName}`,
-      `Operator Signature (typed): ${d.operatorSignature}`,
-      `Date: ${d.operatorDate}`,
-      "",
-      "SECTION IV — TRANSPORT/SUPPORT VEHICLES (SAFE TO OPERATE? Yes / No / N/A)",
-      line(d.sectionIV),
-      "",
-      "SECTION V — REMARKS",
-      d.remarks || "—",
-      "",
-      "RELEASE",
-      `No Damage/No Claim: ${d.releaseNoDamage}`,
-      `Miles/Hrs: ${d.releaseMilesHrs}`,
-      `Date: ${d.releaseDate}`,
-      `Time: ${d.releaseTime}`,
-      `Operator Printed Name: ${d.releaseOperatorName}`,
-      `Operator Signature (typed): ${d.releaseOperatorSignature}`
-    ].join("\n");
-  }
-
-  function submitEmail() {
-    const d = collectData();
-
-    const subjectParts = [
-      "G&J Pre-Use Inspection",
-      d.equipmentNo || "",
-      d.preUseDate || ""
-    ].filter(Boolean);
-
-    const subject = subjectParts.join(" | ");
-    const body = formatEmailBody(d);
-
-    const mailto = `mailto:salud.madrigal@gjheavyhaul.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
-  }
-
-  function stampNow() {
-    const now = new Date();
-    const yyyy = now.getFullYear();
-    const mm = String(now.getMonth() + 1).padStart(2, "0");
-    const dd = String(now.getDate()).padStart(2, "0");
-    const hh = String(now.getHours()).padStart(2, "0");
-    const mi = String(now.getMinutes()).padStart(2, "0");
-
-    const dateVal = `${yyyy}-${mm}-${dd}`;
-    const timeVal = `${hh}:${mi}`;
-
-    const setIfExists = (name, val) => {
-      const el = document.querySelector(`[name="${name}"]`);
-      if (el) el.value = val;
-    };
-
-    setIfExists("preUseDate", dateVal);
-    setIfExists("preUseTime", timeVal);
-    setIfExists("operatorDate", dateVal);
-    setIfExists("releaseDate", dateVal);
-    setIfExists("releaseTime", timeVal);
+  function submitEmail(){
+    const subject = "G&J Pre-Use Inspection";
+    const body = "Pre-Use Inspection completed.";
+    location.href =
+      `mailto:salud.madrigal@gjheavyhaul.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 </script>
 </body>
