@@ -36,6 +36,7 @@
       padding-bottom: calc(14px + env(safe-area-inset-bottom));
     }
 
+    /* Centered logo + title */
     .brandbar{
       display:flex;
       flex-direction: column;
@@ -75,7 +76,7 @@
 
     /* Section heading block */
     .section{
-      margin: 30px 0 12px;
+      margin: 30px 0 12px; /* whitespace before each subheading */
     }
     .section:first-of-type{
       margin-top: 0;
@@ -114,7 +115,7 @@
       color: var(--ink);
       outline: none;
       min-height: var(--tap);
-      font-size: 16px;
+      font-size: 16px; /* prevents iOS zoom */
     }
 
     input[readonly]{ background:#f9fafb; }
@@ -214,13 +215,6 @@
       font-weight: 800;
     }
 
-    button.danger{
-      color:#b42318;
-      background:#fff;
-      border-color:#fecaca;
-      font-weight: 700;
-    }
-
     button:active{ transform: translateY(1px); }
 
     .note{
@@ -230,6 +224,7 @@
       margin-top: 10px;
     }
 
+    /* PDF behind button */
     details{
       margin-top: 22px;
       border: 1px solid var(--line);
@@ -263,6 +258,7 @@
       background:#fff;
     }
 
+    /* Sticky submit bar */
     .stickybar{
       position: sticky;
       bottom: 0;
@@ -295,6 +291,7 @@
 <body>
   <div class="wrap">
     <div class="brandbar">
+      <!-- Put the logo file in the same folder and name it exactly "gjhh-logo.png" -->
       <img src="./gjhh-logo.png" alt="G&J Heavy Haul logo">
       <h1>Vehicle / Heavy Equipment Pre-Use Inspection Checklist</h1>
     </div>
@@ -473,14 +470,8 @@
           </div>
           <div class="right">
             <button class="primary" type="button" onclick="submitEmail()">Submit</button>
-            <button class="danger" type="button" onclick="resetForm()">Clear</button>
           </div>
         </div>
-
-        <p class="note">
-          If an email client truncates very long messages, the next upgrade is a server workflow (Power Automate / webhook)
-          that emails and archives the submission automatically.
-        </p>
       </div>
     </div>
   </div>
@@ -674,21 +665,8 @@
     const subject = subjectParts.join(" | ");
     const body = formatEmailBody(d);
 
-    // Updated recipient:
     const mailto = `mailto:salud.madrigal@gjheavyhaul.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
-  }
-
-  function resetForm() {
-    document.querySelectorAll('input[type="text"]:not([name="contractorName"]), input[type="date"], input[type="time"], textarea')
-      .forEach(el => el.value = "");
-    document.querySelectorAll('select').forEach(el => el.value = "");
-
-    ["heavy","attach","transport"].forEach(prefix => {
-      document.querySelectorAll(`input[name^="${prefix}_"]`).forEach(r => {
-        if (r.value === "") r.checked = true; // N/A default
-      });
-    });
   }
 
   function stampNow() {
