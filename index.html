@@ -195,7 +195,7 @@
       align-items:center;
     }
 
-    /* IMPORTANT: keep selections normal sized (fix for oversized iPhone rendering) */
+    /* Radio size: normal (prevents iPhone giant circles) */
     input[type="radio"]{
       -webkit-appearance: radio;
       appearance: radio;
@@ -211,8 +211,7 @@
       display:flex;
       align-items:center;
       gap:8px;
-      padding: 10px 12px;      /* reasonable tap size without giant circles */
-      border: none;
+      padding: 10px 12px;      /* tap size without huge circles */
       border-radius:999px;
       background:#fff;
       min-height: 44px;
@@ -221,7 +220,7 @@
       font-size: 15px;
     }
 
-    /* Spacing after Specify (optional) to match item-to-item spacing */
+    /* Spacing after Specify (optional) */
     input[name="sectionIISpecify"]{ margin-bottom: 10px; }
 
     /* PDF behind button */
@@ -295,6 +294,12 @@
       border-color: rgba(40,62,138,.35);
     }
 
+    button.danger{
+      background: rgba(220, 38, 38, .08);
+      border-color: rgba(220, 38, 38, .35);
+      color: #b91c1c;
+    }
+
     /* Sticky submit */
     .stickybar{
       position: sticky;
@@ -317,6 +322,39 @@
       color: var(--muted);
       line-height: 1.1rem;
     }
+
+    /* DO NOT OPERATE banner */
+    .dno-banner{
+      display:none;
+      margin: 12px 0 0;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(220,38,38,.35);
+      background: rgba(220,38,38,.08);
+      color: #b91c1c;
+      font-weight: 900;
+      letter-spacing: .02em;
+    }
+    .dno-banner small{
+      display:block;
+      font-weight: 700;
+      margin-top: 6px;
+      color: #991b1b;
+      letter-spacing: 0;
+    }
+
+    /* Inline validation for remarks */
+    .field-error{
+      display:none;
+      margin-top: 6px;
+      color: #b91c1c;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .invalid{
+      border-color: rgba(220,38,38,.55) !important;
+      background: rgba(220,38,38,.03) !important;
+    }
   </style>
 </head>
 
@@ -335,7 +373,7 @@
       <div class="grid2">
         <div>
           <label>Equipment No.</label>
-          <input type="text" name="equipmentNo" />
+          <input type="text" name="equipmentNo" id="equipmentNo" />
         </div>
       </div>
 
@@ -358,7 +396,7 @@
         <div class="grid3">
           <div>
             <label>Status</label>
-            <select name="preUseStatus">
+            <select name="preUseStatus" id="preUseStatus">
               <option value="">—</option>
               <option value="Accepted">Accepted</option>
               <option value="Rejected">Rejected</option>
@@ -372,12 +410,12 @@
 
           <div>
             <label>Date</label>
-            <input type="date" name="preUseDate" />
+            <input type="date" name="preUseDate" id="preUseDate" />
           </div>
 
           <div>
             <label>Time</label>
-            <input type="time" name="preUseTime" />
+            <input type="time" name="preUseTime" id="preUseTime" />
           </div>
         </div>
 
@@ -418,7 +456,7 @@
 
           <div>
             <label>Date</label>
-            <input type="date" name="operatorDate" />
+            <input type="date" name="operatorDate" id="operatorDate" />
           </div>
         </div>
 
@@ -433,7 +471,8 @@
         </div>
 
         <label>Describe all unsatisfactory items and identify by line number</label>
-        <textarea name="remarks"></textarea>
+        <textarea name="remarks" id="remarks"></textarea>
+        <div class="field-error" id="remarksError">Remarks are required when equipment is flagged DO NOT OPERATE.</div>
 
         <div class="section">
           <div class="title">RELEASE</div>
@@ -456,12 +495,12 @@
 
           <div>
             <label>Date</label>
-            <input type="date" name="releaseDate" />
+            <input type="date" name="releaseDate" id="releaseDate" />
           </div>
 
           <div>
             <label>Time</label>
-            <input type="time" name="releaseTime" />
+            <input type="time" name="releaseTime" id="releaseTime" />
           </div>
 
           <div>
@@ -475,12 +514,18 @@
           </div>
         </div>
 
+        <!-- DO NOT OPERATE banner appears above sticky bar -->
+        <div class="dno-banner" id="dnoBanner">
+          DO NOT OPERATE — One or more inspection items is marked “No”.
+          <small>Remarks are required, and the email will CC shop@gjheavyhaul.com.</small>
+        </div>
+
         <div class="stickybar">
-          <div class="left">
+          <div class="left" id="stickyText">
             Submit opens an email draft to salud.madrigal@gjheavyhaul.com using the device’s default mail app.
           </div>
           <div>
-            <button class="primary" type="button" onclick="submitEmail()">Submit</button>
+            <button class="primary" type="button" id="submitBtn" onclick="submitEmail()">Submit</button>
           </div>
         </div>
       </div>
@@ -489,7 +534,6 @@
 
 <script>
   // Full item language aligned to OF-296 (REV. 2-2016)
-
   const heavy = [
     "1. ROPS, roll-over protection system: Manufacturer-approved system secured to mainframe of tractor. Must include approved seat belts. *",
     "2. Gauges and lights: mounted and function properly. *",
@@ -586,6 +630,78 @@
     return sel ? sel.value : "";
   }
 
+  function isDoNotOperate() {
+    // Any checklist radio group set to "No" triggers DNO
+    const noChecked = document.querySelector('input[type="radio"][value="No"]:checked');
+    return !!noChecked;
+  }
+
+  function updateDoNotOperateUI() {
+    const dno = isDoNotOperate();
+
+    const banner = document.getElementById("dnoBanner");
+    const submitBtn = document.getElementById("submitBtn");
+    const stickyText = document.getElementById("stickyText");
+    const remarks = document.getElementById("remarks");
+
+    if (dno) {
+      banner.style.display = "block";
+      submitBtn.classList.remove("primary");
+      submitBtn.classList.add("danger");
+      stickyText.textContent = "DO NOT OPERATE flagged — submitting will CC shop@gjheavyhaul.com.";
+      remarks.setAttribute("required", "required");
+    } else {
+      banner.style.display = "none";
+      submitBtn.classList.remove("danger");
+      submitBtn.classList.add("primary");
+      stickyText.textContent = "Submit opens an email draft to salud.madrigal@gjheavyhaul.com using the device’s default mail app.";
+      remarks.removeAttribute("required");
+      clearRemarksError();
+    }
+  }
+
+  // Listen for any radio changes
+  document.addEventListener("change", (e) => {
+    if (e.target && e.target.matches('input[type="radio"]')) {
+      updateDoNotOperateUI();
+    }
+  });
+
+  // Also clear error as user types remarks
+  document.addEventListener("input", (e) => {
+    if (e.target && e.target.id === "remarks") {
+      clearRemarksError();
+    }
+  });
+
+  function showRemarksError() {
+    const remarks = document.getElementById("remarks");
+    const err = document.getElementById("remarksError");
+    remarks.classList.add("invalid");
+    err.style.display = "block";
+  }
+
+  function clearRemarksError() {
+    const remarks = document.getElementById("remarks");
+    const err = document.getElementById("remarksError");
+    remarks.classList.remove("invalid");
+    err.style.display = "none";
+  }
+
+  function validateBeforeSubmit() {
+    const dno = isDoNotOperate();
+    if (!dno) return true;
+
+    const remarksVal = (document.getElementById("remarks").value || "").trim();
+    if (!remarksVal) {
+      showRemarksError();
+      document.getElementById("remarks").scrollIntoView({ behavior: "smooth", block: "center" });
+      return false;
+    }
+    clearRemarksError();
+    return true;
+  }
+
   function collectData() {
     return {
       equipmentNo: getValue("equipmentNo"),
@@ -658,13 +774,30 @@
     ].join("\n");
   }
 
+  function subjectFor(dno, equipmentNo) {
+    const eq = equipmentNo ? equipmentNo : "(Not Provided)";
+    if (dno) return `DO NOT OPERATE - Equipment No. ${eq}`;
+    return `Pre-Use Inspection - Equipment No. ${eq}`;
+  }
+
   function submitEmail() {
+    if (!validateBeforeSubmit()) return;
+
+    const dno = isDoNotOperate();
     const d = collectData();
-    const subjectParts = ["G&J Pre-Use Inspection", d.equipmentNo || "", d.preUseDate || ""].filter(Boolean);
-    const subject = subjectParts.join(" | ");
+
+    const subject = subjectFor(dno, d.equipmentNo);
     const body = formatEmailBody(d);
 
-    const mailto = `mailto:salud.madrigal@gjheavyhaul.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const to = "salud.madrigal@gjheavyhaul.com";
+    const cc = dno ? "shop@gjheavyhaul.com" : "";
+
+    const mailto =
+      `mailto:${encodeURIComponent(to)}?` +
+      `subject=${encodeURIComponent(subject)}&` +
+      `body=${encodeURIComponent(body)}` +
+      (cc ? `&cc=${encodeURIComponent(cc)}` : "");
+
     window.location.href = mailto;
   }
 
@@ -690,7 +823,9 @@
     set("releaseDate", dateVal);
     set("releaseTime", timeVal);
   }
+
+  // Initialize state on load
+  updateDoNotOperateUI();
 </script>
 </body>
 </html>
-
