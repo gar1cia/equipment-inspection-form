@@ -70,6 +70,40 @@
       color: var(--ink); /* keep title black */
     }
 
+    /* Language toggle */
+    .langbar{
+      margin-top: 8px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .seg{
+      display:inline-flex;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      overflow:hidden;
+    }
+
+    .seg button{
+      border: 0;
+      background: transparent;
+      padding: 10px 14px;
+      min-height: 40px;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .seg button.active{
+      background: rgba(0,0,126,.08);
+      color: var(--heading);
+    }
+
     .card{
       background: var(--card);
       border: 1px solid var(--line);
@@ -362,23 +396,30 @@
   <div class="wrap">
     <div class="brandbar">
       <img src="./gjhh-logo.png" alt="G&J Heavy Haul logo">
-      <h1>Vehicle / Heavy Equipment Pre-Use Inspection Checklist</h1>
+      <h1 data-i18n="page_title">Vehicle / Heavy Equipment Pre-Use Inspection Checklist</h1>
+
+      <div class="langbar" aria-label="Language selector">
+        <div class="seg" role="tablist" aria-label="Language">
+          <button id="langEn" type="button" class="active" role="tab" aria-selected="true">English</button>
+          <button id="langEs" type="button" role="tab" aria-selected="false">Español</button>
+        </div>
+      </div>
     </div>
 
     <div class="card">
       <div class="section">
-        <div class="title">GENERAL EQUIPMENT INFORMATION</div>
+        <div class="title" data-i18n="general_equipment_info">GENERAL EQUIPMENT INFORMATION</div>
       </div>
 
       <div class="grid2">
         <div>
-          <label>Equipment No.</label>
+          <label data-i18n="equipment_no">Equipment No.</label>
           <input type="text" name="equipmentNo" id="equipmentNo" />
         </div>
       </div>
 
       <details>
-        <summary>View PDF Reference</summary>
+        <summary data-i18n="view_pdf">View PDF Reference</summary>
         <div class="pdfwrap">
           <iframe src="./OF-296_Equipment%20Checklist.pdf" title="OF-296 PDF"></iframe>
         </div>
@@ -386,16 +427,18 @@
 
       <div class="items">
         <div class="section">
-          <div class="title">PRE-USE INSPECTION</div>
+          <div class="title" data-i18n="pre_use_inspection">PRE-USE INSPECTION</div>
         </div>
 
         <div class="btns">
-          <button class="primary" type="button" onclick="stampNow()">Set Date/Time to Now</button>
+          <button class="primary" type="button" onclick="stampNow()">
+            <span data-i18n="set_datetime_now">Set Date/Time to Now</span>
+          </button>
         </div>
 
         <div class="grid3">
           <div>
-            <label>Status</label>
+            <label data-i18n="status">Status</label>
             <select name="preUseStatus" id="preUseStatus">
               <option value="">—</option>
               <option value="Accepted">Accepted</option>
@@ -404,83 +447,85 @@
           </div>
 
           <div>
-            <label>Miles / Hrs</label>
+            <label data-i18n="miles_hrs">Miles / Hrs</label>
             <input type="text" name="preUseMilesHrs" inputmode="decimal" />
           </div>
 
           <div>
-            <label>Date</label>
+            <label data-i18n="date">Date</label>
             <input type="date" name="preUseDate" id="preUseDate" />
           </div>
 
           <div>
-            <label>Time</label>
+            <label data-i18n="time">Time</label>
             <input type="time" name="preUseTime" id="preUseTime" />
           </div>
         </div>
 
         <div class="section">
-          <div class="title">SECTION I — HEAVY EQUIPMENT</div>
-          <div class="sub">SAFE TO OPERATE?</div>
+          <div class="title" data-i18n="section1_title">SECTION I — HEAVY EQUIPMENT</div>
+          <div class="sub" data-i18n="safe_to_operate">SAFE TO OPERATE?</div>
         </div>
         <div id="heavyItems"></div>
 
         <div class="section">
-          <div class="title">SECTION II — ATTACHMENTS / PUMP / CHAINSAW / OTHER</div>
-          <div class="sub">SAFE TO OPERATE?</div>
+          <div class="title" data-i18n="section2_title">SECTION II — ATTACHMENTS / PUMP / CHAINSAW / OTHER</div>
+          <div class="sub" data-i18n="safe_to_operate">SAFE TO OPERATE?</div>
         </div>
 
-        <label>Specify (optional)</label>
-        <input type="text" name="sectionIISpecify" placeholder="e.g., broom, water truck pump, chainsaw, etc." />
+        <label data-i18n="specify_optional">Specify (optional)</label>
+        <input type="text" name="sectionIISpecify" data-i18n-placeholder="specify_placeholder" placeholder="e.g., broom, water truck pump, chainsaw, etc." />
         <div id="attachItems"></div>
 
         <div class="section">
-          <div class="title">SECTION III — LIABILITY</div>
+          <div class="title" data-i18n="section3_title">SECTION III — LIABILITY</div>
         </div>
 
-        <p class="liability-text">
+        <p class="liability-text" data-i18n="liability_text">
           The purpose of this checklist is to document pre-existing vehicle/equipment condition and to determine suitability for incident use.
           I hereby acknowledge full responsibility and liability for the operation and mechanical condition of the vehicle/equipment described herein.
         </p>
 
         <div class="grid2">
           <div>
-            <label>Operator Printed Name</label>
+            <label data-i18n="operator_printed_name">Operator Printed Name</label>
             <input type="text" name="operatorName" />
           </div>
 
           <div>
-            <label>Operator Signature (typed)</label>
-            <input type="text" name="operatorSignature" placeholder="Type full name" />
+            <label data-i18n="operator_signature_typed">Operator Signature (typed)</label>
+            <input type="text" name="operatorSignature" data-i18n-placeholder="type_full_name" placeholder="Type full name" />
           </div>
 
           <div>
-            <label>Date</label>
+            <label data-i18n="date">Date</label>
             <input type="date" name="operatorDate" id="operatorDate" />
           </div>
         </div>
 
         <div class="section">
-          <div class="title">SECTION IV — TRANSPORT OR SUPPORT VEHICLES</div>
-          <div class="sub">SAFE TO OPERATE?</div>
+          <div class="title" data-i18n="section4_title">SECTION IV — TRANSPORT OR SUPPORT VEHICLES</div>
+          <div class="sub" data-i18n="safe_to_operate">SAFE TO OPERATE?</div>
         </div>
         <div id="transportItems"></div>
 
         <div class="section">
-          <div class="title">SECTION V — REMARKS</div>
+          <div class="title" data-i18n="section5_title">SECTION V — REMARKS</div>
         </div>
 
-        <label>Describe all unsatisfactory items and identify by line number</label>
+        <label data-i18n="remarks_label">Describe all unsatisfactory items and identify by line number</label>
         <textarea name="remarks" id="remarks"></textarea>
-        <div class="field-error" id="remarksError">Remarks are required when equipment is flagged DO NOT OPERATE.</div>
+        <div class="field-error" id="remarksError" data-i18n="remarks_required_dno">
+          Remarks are required when equipment is flagged DO NOT OPERATE.
+        </div>
 
         <div class="section">
-          <div class="title">RELEASE</div>
+          <div class="title" data-i18n="release_title">RELEASE</div>
         </div>
 
         <div class="grid3">
           <div>
-            <label>No Damage / No Claim</label>
+            <label data-i18n="no_damage_no_claim">No Damage / No Claim</label>
             <select name="releaseNoDamage">
               <option value="">—</option>
               <option value="Yes">Yes</option>
@@ -489,51 +534,177 @@
           </div>
 
           <div>
-            <label>Miles / Hrs</label>
+            <label data-i18n="miles_hrs">Miles / Hrs</label>
             <input type="text" name="releaseMilesHrs" inputmode="decimal" />
           </div>
 
           <div>
-            <label>Date</label>
+            <label data-i18n="date">Date</label>
             <input type="date" name="releaseDate" id="releaseDate" />
           </div>
 
           <div>
-            <label>Time</label>
+            <label data-i18n="time">Time</label>
             <input type="time" name="releaseTime" id="releaseTime" />
           </div>
 
           <div>
-            <label>Operator Printed Name</label>
+            <label data-i18n="operator_printed_name">Operator Printed Name</label>
             <input type="text" name="releaseOperatorName" />
           </div>
 
           <div>
-            <label>Operator Signature (typed)</label>
-            <input type="text" name="releaseOperatorSignature" placeholder="Type full name" />
+            <label data-i18n="operator_signature_typed">Operator Signature (typed)</label>
+            <input type="text" name="releaseOperatorSignature" data-i18n-placeholder="type_full_name" placeholder="Type full name" />
           </div>
         </div>
 
-        <!-- DO NOT OPERATE banner appears above sticky bar -->
         <div class="dno-banner" id="dnoBanner">
-          DO NOT OPERATE — One or more inspection items is marked “No”.
-          <small>Remarks are required, and the email will CC shop@gjheavyhaul.com.</small>
+          <span data-i18n="dno_banner_title">DO NOT OPERATE — One or more inspection items is marked “No”.</span>
+          <small data-i18n="dno_banner_sub">Remarks are required, and the email will CC shop@gjheavyhaul.com.</small>
         </div>
 
         <div class="stickybar">
-          <div class="left" id="stickyText">
+          <div class="left" id="stickyText" data-i18n="sticky_normal">
             Submit opens an email draft to salud.madrigal@gjheavyhaul.com using the device’s default mail app.
           </div>
           <div>
-            <button class="primary" type="button" id="submitBtn" onclick="submitEmail()">Submit</button>
+            <button class="primary" type="button" id="submitBtn" onclick="submitEmail()">
+              <span data-i18n="submit">Submit</span>
+            </button>
           </div>
         </div>
+
       </div>
     </div>
   </div>
 
 <script>
-  // Full item language aligned to OF-296 (REV. 2-2016)
+  /* -------------------- Translations -------------------- */
+  const I18N = {
+    en: {
+      page_title: "Vehicle / Heavy Equipment Pre-Use Inspection Checklist",
+      general_equipment_info: "GENERAL EQUIPMENT INFORMATION",
+      equipment_no: "Equipment No.",
+      view_pdf: "View PDF Reference",
+      pre_use_inspection: "PRE-USE INSPECTION",
+      set_datetime_now: "Set Date/Time to Now",
+      status: "Status",
+      miles_hrs: "Miles / Hrs",
+      date: "Date",
+      time: "Time",
+      section1_title: "SECTION I — HEAVY EQUIPMENT",
+      section2_title: "SECTION II — ATTACHMENTS / PUMP / CHAINSAW / OTHER",
+      section3_title: "SECTION III — LIABILITY",
+      section4_title: "SECTION IV — TRANSPORT OR SUPPORT VEHICLES",
+      section5_title: "SECTION V — REMARKS",
+      release_title: "RELEASE",
+      safe_to_operate: "SAFE TO OPERATE?",
+      specify_optional: "Specify (optional)",
+      specify_placeholder: "e.g., broom, water truck pump, chainsaw, etc.",
+      operator_printed_name: "Operator Printed Name",
+      operator_signature_typed: "Operator Signature (typed)",
+      type_full_name: "Type full name",
+      liability_text:
+        "The purpose of this checklist is to document pre-existing vehicle/equipment condition and to determine suitability for incident use. " +
+        "I hereby acknowledge full responsibility and liability for the operation and mechanical condition of the vehicle/equipment described herein.",
+      remarks_label: "Describe all unsatisfactory items and identify by line number",
+      remarks_required_dno: "Remarks are required when equipment is flagged DO NOT OPERATE.",
+      no_damage_no_claim: "No Damage / No Claim",
+      submit: "Submit",
+      yes: "Yes",
+      no: "No",
+      na: "N/A",
+      dno_banner_title: "DO NOT OPERATE — One or more inspection items is marked “No”.",
+      dno_banner_sub: "Remarks are required, and the email will CC shop@gjheavyhaul.com.",
+      sticky_normal: "Submit opens an email draft to salud.madrigal@gjheavyhaul.com using the device’s default mail app.",
+      sticky_dno: "DO NOT OPERATE flagged — submitting will CC shop@gjheavyhaul.com."
+    },
+    es: {
+      page_title: "Lista de verificación de inspección previa al uso (vehículo/equipo pesado)",
+      general_equipment_info: "INFORMACIÓN GENERAL DEL EQUIPO",
+      equipment_no: "No. de equipo",
+      view_pdf: "Ver PDF de referencia",
+      pre_use_inspection: "INSPECCIÓN PREVIA AL USO",
+      set_datetime_now: "Poner fecha/hora actual",
+      status: "Estado",
+      miles_hrs: "Millas / Horas",
+      date: "Fecha",
+      time: "Hora",
+      section1_title: "SECCIÓN I — EQUIPO PESADO",
+      section2_title: "SECCIÓN II — ACCESORIOS / BOMBA / MOTOSIERRA / OTROS",
+      section3_title: "SECCIÓN III — RESPONSABILIDAD",
+      section4_title: "SECCIÓN IV — VEHÍCULOS DE TRANSPORTE O APOYO",
+      section5_title: "SECCIÓN V — OBSERVACIONES",
+      release_title: "LIBERACIÓN",
+      safe_to_operate: "¿SEGURO PARA OPERAR?",
+      specify_optional: "Especifique (opcional)",
+      specify_placeholder: "p. ej., escoba, bomba de pipa, motosierra, etc.",
+      operator_printed_name: "Nombre del operador (en letra de molde)",
+      operator_signature_typed: "Firma del operador (escrita)",
+      type_full_name: "Escriba el nombre completo",
+      liability_text:
+        "El propósito de esta lista es documentar la condición preexistente del vehículo/equipo y determinar su idoneidad para uso. " +
+        "Por la presente reconozco plena responsabilidad por la operación y la condición mecánica del vehículo/equipo descrito aquí.",
+      remarks_label: "Describa los puntos no satisfactorios e identifíquelos por número de línea",
+      remarks_required_dno: "Se requieren comentarios cuando el equipo está marcado como NO OPERAR.",
+      no_damage_no_claim: "Sin daño / Sin reclamo",
+      submit: "Enviar",
+      yes: "Sí",
+      no: "No",
+      na: "N/A",
+      dno_banner_title: "NO OPERAR — Uno o más puntos de inspección están marcados “No”.",
+      dno_banner_sub: "Se requieren comentarios y el correo incluirá (CC) shop@gjheavyhaul.com.",
+      sticky_normal: "Al enviar, se abrirá un correo a salud.madrigal@gjheavyhaul.com en la app de correo del dispositivo.",
+      sticky_dno: "NO OPERAR marcado — al enviar se incluirá (CC) shop@gjheavyhaul.com."
+    }
+  };
+
+  let currentLang = "en";
+
+  function applyLang(lang){
+    currentLang = (lang === "es") ? "es" : "en";
+    const dict = I18N[currentLang];
+
+    // Update text nodes
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (dict[key]) el.textContent = dict[key];
+    });
+
+    // Update placeholders
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+      const key = el.getAttribute("data-i18n-placeholder");
+      if (dict[key]) el.setAttribute("placeholder", dict[key]);
+    });
+
+    // Update choice labels (Yes/No/N/A)
+    document.querySelectorAll("[data-i18n-yn]").forEach(el => {
+      const key = el.getAttribute("data-i18n-yn");
+      if (dict[key]) el.textContent = dict[key];
+    });
+
+    // Update sticky text based on current DNO state
+    updateDoNotOperateUI();
+
+    // Toggle UI state
+    const enBtn = document.getElementById("langEn");
+    const esBtn = document.getElementById("langEs");
+    if (currentLang === "es") {
+      esBtn.classList.add("active"); esBtn.setAttribute("aria-selected","true");
+      enBtn.classList.remove("active"); enBtn.setAttribute("aria-selected","false");
+      document.documentElement.lang = "es";
+    } else {
+      enBtn.classList.add("active"); enBtn.setAttribute("aria-selected","true");
+      esBtn.classList.remove("active"); esBtn.setAttribute("aria-selected","false");
+      document.documentElement.lang = "en";
+    }
+
+    // Persist choice
+    try { localStorage.setItem("gjhh_lang", currentLang); } catch(e) {}
+  }
+
+  /* -------------------- Checklist data -------------------- */
   const heavy = [
     "1. ROPS, roll-over protection system: Manufacturer-approved system secured to mainframe of tractor. Must include approved seat belts. *",
     "2. Gauges and lights: mounted and function properly. *",
@@ -607,9 +778,18 @@
       el.innerHTML = `
         <div class="desc">${t}</div>
         <div class="yn" role="group" aria-label="${t}">
-          <label class="ynlabel"><input type="radio" name="${key}" value="Yes"> Yes</label>
-          <label class="ynlabel"><input type="radio" name="${key}" value="No"> No</label>
-          <label class="ynlabel"><input type="radio" name="${key}" value="" checked> N/A</label>
+          <label class="ynlabel">
+            <input type="radio" name="${key}" value="Yes">
+            <span data-i18n-yn="yes">Yes</span>
+          </label>
+          <label class="ynlabel">
+            <input type="radio" name="${key}" value="No">
+            <span data-i18n-yn="no">No</span>
+          </label>
+          <label class="ynlabel">
+            <input type="radio" name="${key}" value="" checked>
+            <span data-i18n-yn="na">N/A</span>
+          </label>
         </div>
       `;
       root.appendChild(el);
@@ -620,6 +800,7 @@
   renderYesNoNA("attachItems", attach, "attach");
   renderYesNoNA("transportItems", transport, "transport");
 
+  /* -------------------- DNO logic + validation -------------------- */
   function getValue(name) {
     const el = document.querySelector(`[name="${name}"]`);
     return el ? (el.value || "").trim() : "";
@@ -631,48 +812,9 @@
   }
 
   function isDoNotOperate() {
-    // Any checklist radio group set to "No" triggers DNO
     const noChecked = document.querySelector('input[type="radio"][value="No"]:checked');
     return !!noChecked;
   }
-
-  function updateDoNotOperateUI() {
-    const dno = isDoNotOperate();
-
-    const banner = document.getElementById("dnoBanner");
-    const submitBtn = document.getElementById("submitBtn");
-    const stickyText = document.getElementById("stickyText");
-    const remarks = document.getElementById("remarks");
-
-    if (dno) {
-      banner.style.display = "block";
-      submitBtn.classList.remove("primary");
-      submitBtn.classList.add("danger");
-      stickyText.textContent = "DO NOT OPERATE flagged — submitting will CC shop@gjheavyhaul.com.";
-      remarks.setAttribute("required", "required");
-    } else {
-      banner.style.display = "none";
-      submitBtn.classList.remove("danger");
-      submitBtn.classList.add("primary");
-      stickyText.textContent = "Submit opens an email draft to salud.madrigal@gjheavyhaul.com using the device’s default mail app.";
-      remarks.removeAttribute("required");
-      clearRemarksError();
-    }
-  }
-
-  // Listen for any radio changes
-  document.addEventListener("change", (e) => {
-    if (e.target && e.target.matches('input[type="radio"]')) {
-      updateDoNotOperateUI();
-    }
-  });
-
-  // Also clear error as user types remarks
-  document.addEventListener("input", (e) => {
-    if (e.target && e.target.id === "remarks") {
-      clearRemarksError();
-    }
-  });
 
   function showRemarksError() {
     const remarks = document.getElementById("remarks");
@@ -686,6 +828,31 @@
     const err = document.getElementById("remarksError");
     remarks.classList.remove("invalid");
     err.style.display = "none";
+  }
+
+  function updateDoNotOperateUI() {
+    const dno = isDoNotOperate();
+    const dict = I18N[currentLang];
+
+    const banner = document.getElementById("dnoBanner");
+    const submitBtn = document.getElementById("submitBtn");
+    const stickyText = document.getElementById("stickyText");
+    const remarks = document.getElementById("remarks");
+
+    if (dno) {
+      banner.style.display = "block";
+      submitBtn.classList.remove("primary");
+      submitBtn.classList.add("danger");
+      stickyText.textContent = dict.sticky_dno;
+      remarks.setAttribute("required", "required");
+    } else {
+      banner.style.display = "none";
+      submitBtn.classList.remove("danger");
+      submitBtn.classList.add("primary");
+      stickyText.textContent = dict.sticky_normal;
+      remarks.removeAttribute("required");
+      clearRemarksError();
+    }
   }
 
   function validateBeforeSubmit() {
@@ -702,6 +869,15 @@
     return true;
   }
 
+  document.addEventListener("change", (e) => {
+    if (e.target && e.target.matches('input[type="radio"]')) updateDoNotOperateUI();
+  });
+
+  document.addEventListener("input", (e) => {
+    if (e.target && e.target.id === "remarks") clearRemarksError();
+  });
+
+  /* -------------------- Email -------------------- */
   function collectData() {
     return {
       equipmentNo: getValue("equipmentNo"),
@@ -753,7 +929,7 @@
       line(d.sectionII),
       "",
       "SECTION III — LIABILITY",
-      "The purpose of this checklist is to document pre-existing vehicle/equipment condition and to determine suitability for incident use. I hereby acknowledge full responsibility and liability for the operation and mechanical condition of the vehicle/equipment described herein.",
+      I18N.en.liability_text,
       `Operator Printed Name: ${d.operatorName}`,
       `Operator Signature (typed): ${d.operatorSignature}`,
       `Date: ${d.operatorDate}`,
@@ -801,6 +977,7 @@
     window.location.href = mailto;
   }
 
+  /* -------------------- Time stamps -------------------- */
   function stampNow() {
     const now = new Date();
     const yyyy = now.getFullYear();
@@ -824,8 +1001,20 @@
     set("releaseTime", timeVal);
   }
 
-  // Initialize state on load
-  updateDoNotOperateUI();
+  /* -------------------- Wire up language toggle -------------------- */
+  document.getElementById("langEn").addEventListener("click", () => applyLang("en"));
+  document.getElementById("langEs").addEventListener("click", () => applyLang("es"));
+
+  // Load remembered language
+  (function init(){
+    let saved = "en";
+    try { saved = localStorage.getItem("gjhh_lang") || "en"; } catch(e) {}
+    renderYesNoNA("heavyItems", heavy, "heavy");
+    renderYesNoNA("attachItems", attach, "attach");
+    renderYesNoNA("transportItems", transport, "transport");
+    applyLang(saved);
+    updateDoNotOperateUI();
+  })();
 </script>
 </body>
 </html>
