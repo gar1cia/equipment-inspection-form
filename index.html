@@ -7,11 +7,11 @@
 
   <style>
     :root{
-      --heading:#00007e;
-      --btn:#283e8a;
+      --heading:#00007e;   /* subheadings + radio selection */
+      --btn:#283e8a;       /* buttons */
       --bg:#f6f7fb;
       --card:#ffffff;
-      --ink:#000000;
+      --ink:#000000;       /* title */
       --text:#111827;
       --muted:#6b7280;
       --line:#e5e7eb;
@@ -182,17 +182,14 @@
       grid-template-columns: 1fr;
       gap:10px;
     }
-
     .grid3{
       display:grid;
       grid-template-columns: 1fr;
       gap:10px;
     }
-
     @media(min-width:900px){
       .grid3{ grid-template-columns:1fr 1fr 1fr; }
     }
-
     .grid2 > div, .grid3 > div{ min-width:0; }
 
     .items{
@@ -460,8 +457,7 @@
         </div>
 
         <label data-i18n="specify_optional">Specify (optional)</label>
-        <input type="text" name="sectionIISpecify" data-i18n-placeholder="specify_placeholder"
-               placeholder="e.g., broom, water truck pump, chainsaw, etc." />
+        <input type="text" name="sectionIISpecify" data-i18n-placeholder="specify_placeholder" placeholder="e.g., broom, water truck pump, chainsaw, etc." />
         <div id="attachItems"></div>
 
         <div class="section">
@@ -510,6 +506,7 @@
           <div class="title" data-i18n="release_title">RELEASE</div>
         </div>
 
+        <!-- RELEASE: Miles/Hrs field removed per request -->
         <div class="grid3">
           <div>
             <label data-i18n="no_damage_no_claim">No Damage / No Claim</label>
@@ -518,11 +515,6 @@
               <option value="Yes">Yes</option>
               <option value="No">No</option>
             </select>
-          </div>
-
-          <div>
-            <label data-i18n="miles_hrs">Miles / Hrs</label>
-            <input type="text" name="releaseMilesHrs" inputmode="decimal" />
           </div>
 
           <div>
@@ -567,7 +559,6 @@
   </div>
 
 <script>
-  /* -------------------- Translations (UI labels) -------------------- */
   const I18N = {
     en: {
       page_title: "Vehicle / Heavy Equipment Pre-Use Inspection Checklist",
@@ -647,140 +638,134 @@
     }
   };
 
-  /* -------------------- Checklist items (EN/ES) -------------------- */
-  const CHECKLIST = {
-    heavy: [
-      {
-        en: "1. ROPS, roll-over protection system: Manufacturer-approved system secured to mainframe of tractor. Must include approved seat belts.",
-        es: "1. ROPS (sistema de protección contra vuelcos): Sistema aprobado por el fabricante y asegurado al chasis principal. Debe incluir cinturones de seguridad aprobados."
-      },
-      {
-        en: "2. Gauges and lights: mounted and function properly.",
-        es: "2. Indicadores y luces: instalados y funcionan correctamente."
-      },
-      {
-        en: "3. Battery: check for corrosion, loose terminals, and hold downs.",
-        es: "3. Batería: revisar corrosión, terminales flojos y sujeciones."
-      },
-      {
-        en: "4. Engine running: check oil pressure, knocks and leaks.",
-        es: "4. Motor en marcha: revisar presión de aceite, ruidos (golpeteos) y fugas."
-      },
-      {
-        en: "5. Sweeps, deflectors, safety screens (glass).",
-        es: "5. Protectores, deflectores y mallas/pantallas de seguridad (vidrio)."
-      },
-      {
-        en: "6. Steering components: tight, free of play.",
-        es: "6. Componentes de dirección: firmes, sin holgura."
-      },
-      {
-        en: "7. Brakes: damaged, worn or out of adjustment.",
-        es: "7. Frenos: dañados, desgastados o desajustados."
-      },
-      {
-        en: "8. Exhaust system: equipped with a USFS-qualified spark arrester unless turbocharged.",
-        es: "8. Sistema de escape: equipado con apagachispas calificado (USFS) a menos que sea turbo."
-      },
-      {
-        en: "9. Fuel system: free of leaks and damage.",
-        es: "9. Sistema de combustible: sin fugas ni daños."
-      },
-      {
-        en: "10. Cooling system: full, free of leaks and damage.",
-        es: "10. Sistema de enfriamiento: nivel adecuado, sin fugas ni daños."
-      },
-      {
-        en: "11. Fan and fan belts: check for proper tension. No fraying/cracks.",
-        es: "11. Ventilador y bandas: tensión correcta. Sin deshilachado ni grietas."
-      },
-      {
-        en: "12. Engine support, equalizer bar, springs, main springs: check shackle bolts, shifted spring leaf.",
-        es: "12. Soporte del motor, barra ecualizadora y resortes: revisar pernos de grillete y hojas de resorte desplazadas."
-      },
-      {
-        en: "13. Belly plate, radiator guards: securely mounted and free from debris.",
-        es: "13. Placa inferior y protectores del radiador: bien sujetos y sin residuos."
-      },
-      {
-        en: "14. Final drive, transmission and differential: check for dripping.",
-        es: "14. Mandos finales, transmisión y diferencial: revisar goteos."
-      },
-      {
-        en: "15. Sprocket and idlers: crack in spokes, sharp sprocket teeth, no welds.",
-        es: "15. Piñones y ruedas guía: grietas, dientes afilados, sin soldaduras."
-      },
-      {
-        en: "16. Tracks and rollers: no broken pads, loose rollers, broken flanges.",
-        es: "16. Orugas y rodillos: sin zapatas rotas, rodillos flojos ni pestañas/alas rotas."
-      },
-      {
-        en: "17. Dozer and assembly: trunnion bolts missing, cracks.",
-        es: "17. Hoja topadora y conjunto: pernos faltantes, grietas."
-      },
-      {
-        en: "18. Rear hitch (drawbar): serviceable, safe.",
-        es: "18. Enganche trasero (barra de tiro): en buen estado y seguro."
-      },
-      {
-        en: "19. Body and cab condition: describe dents and damage.",
-        es: "19. Carrocería y cabina: describir abolladuras y daños."
-      },
-      {
-        en: "20. Equipment cleanliness: all areas free of flammable materials, noxious weeds, and invasive species.",
-        es: "20. Limpieza del equipo: libre de materiales inflamables, malezas nocivas y especies invasoras."
-      },
-      {
-        en: "21. All hydraulic attachments: operate smoothly and all cylinders hold at extension; hose, lines, and pumps have no excessive wear and/or leaks.",
-        es: "21. Accesorios hidráulicos: operan suavemente; cilindros sostienen extensión; mangueras, líneas y bombas sin desgaste excesivo y/o fugas."
-      },
-      {
-        en: "22. Backup or travel alarm (minimum 87 dB).",
-        es: "22. Alarma de reversa o de desplazamiento (mínimo 87 dB)."
-      },
-      {
-        en: "23. Oil level and condition: full and clean.",
-        es: "23. Nivel y condición del aceite: nivel adecuado y limpio."
-      }
-    ],
-    attach: [
-      { en: "1. No missing/broken components, no loose hardware.", es: "1. Sin componentes faltantes/rotos, sin tornillería floja." },
-      { en: "2. Sufficient fluid levels (oil, coolant, etc.).", es: "2. Niveles de fluidos suficientes (aceite, refrigerante, etc.)." },
-      { en: "3. Cutting bar: straight, chain in good condition.", es: "3. Barra de corte: recta, cadena en buen estado." },
-      { en: "4. Cutting teeth: sharp, good repair.", es: "4. Dientes de corte: afilados y en buen estado." },
-      { en: "5. Pump: builds pressure, no water or oil leaks.", es: "5. Bomba: genera presión, sin fugas de agua o aceite." },
-      { en: "6. Engine starts, idles, and shuts off with switch.", es: "6. Motor: arranca, mantiene ralentí y apaga con el interruptor." }
-    ],
-    transport: [
-      { en: "1. DOT or CVSA inspection in the last 12 months (if required).", es: "1. Inspección DOT o CVSA en los últimos 12 meses (si aplica)." },
-      { en: "2. Gauges and lights: mounted and function properly.", es: "2. Indicadores y luces: instalados y funcionan correctamente." },
-      { en: "3. Seat belts: operate properly for each seating position.", es: "3. Cinturones de seguridad: funcionan correctamente en cada asiento." },
-      { en: "4. Glass and mirrors: no cracks in vision.", es: "4. Vidrios y espejos: sin grietas en el campo de visión." },
-      { en: "5. Wipers, washers, and horn operate properly.", es: "5. Limpiaparabrisas, lavaparabrisas y claxon funcionan correctamente." },
-      { en: "6. Clutch pedal: proper adjustment (if applicable).", es: "6. Pedal de clutch: ajuste correcto (si aplica)." },
-      { en: "7. Cooling system: full, free of leaks and damage.", es: "7. Sistema de enfriamiento: nivel adecuado, sin fugas ni daños." },
-      { en: "8. Fluid levels (e.g., oil) and condition: full and clean.", es: "8. Niveles y condición de fluidos (p. ej., aceite): nivel adecuado y limpios." },
-      { en: "9. Battery: check for corrosion, loose terminals and hold downs.", es: "9. Batería: revisar corrosión, terminales flojos y sujeciones." },
-      { en: "10. Fuel system: free of leaks and damage.", es: "10. Sistema de combustible: sin fugas ni daños." },
-      { en: "11. Electrical system: alternator and starter work.", es: "11. Sistema eléctrico: alternador y motor de arranque funcionan." },
-      { en: "12. Engine running: check oil pressure, knocks, and leaks.", es: "12. Motor en marcha: revisar presión de aceite, ruidos y fugas." },
-      { en: "13. Transmission: check for leaks.", es: "13. Transmisión: revisar fugas." },
-      { en: "14. Steering components: tight, free of play.", es: "14. Componentes de dirección: firmes, sin holgura." },
-      { en: "15. Brakes: damaged, worn or out of adjustment.", es: "15. Frenos: dañados, desgastados o desajustados." },
-      { en: "16. 4-wheel drive: check transfer case, leaks (if applicable).", es: "16. Tracción 4x4: revisar caja de transferencia y fugas (si aplica)." },
-      { en: "17. Drive line U-joints: check for looseness.", es: "17. Crucetas (U-joints) del eje: revisar holgura." },
-      { en: "18. Suspension systems: springs, shocks, other.", es: "18. Suspensión: resortes, amortiguadores y otros." },
-      { en: "19. Differential(s): check for leaks.", es: "19. Diferencial(es): revisar fugas." },
-      { en: "20. Exhaust system: no leaks under cab or before turbo.", es: "20. Sistema de escape: sin fugas bajo la cabina o antes del turbo." },
-      { en: "21. Frame condition; body/bed properly attached.", es: "21. Condición del chasis; carrocería/caja bien sujeta." },
-      { en: "22. Tires/wheels (including spare and changing equipment): sufficient load rating, tread depth, no major damage.", es: "22. Llantas/ruedas (incluye refacción y herramientas): capacidad adecuada, dibujo suficiente, sin daños mayores." },
-      { en: "23. Body and interior condition: describe and locate damage.", es: "23. Condición exterior e interior: describir y ubicar daños." },
-      { en: "24. Emergency equipment required (fire extinguisher, spare fuses, reflectors).", es: "24. Equipo de emergencia requerido (extintor, fusibles de repuesto, reflejantes)." },
-      { en: "25. Operator properly licensed.", es: "25. Operador con licencia adecuada." }
-    ]
+  // Checklist items in both languages (asterisks/cross marks removed)
+  const ITEMS = {
+    en: {
+      heavy: [
+        "1. ROPS (roll-over protection system): manufacturer-approved system secured to mainframe of tractor; includes seat belts.",
+        "2. Gauges and lights: mounted and function properly.",
+        "3. Battery: check for corrosion, loose terminals, and hold-downs.",
+        "4. Engine running: check oil pressure, knocks, and leaks.",
+        "5. Sweeps, deflectors, safety screens (glass).",
+        "6. Steering components: tight, free of play.",
+        "7. Brakes: not damaged, not excessively worn, properly adjusted.",
+        "8. Exhaust system: equipped with a USFS-qualified spark arrester unless turbocharged.",
+        "9. Fuel system: free of leaks and damage.",
+        "10. Cooling system: full, free of leaks and damage.",
+        "11. Fan and fan belts: proper tension; no fraying/cracks.",
+        "12. Engine support/equalizer bar/springs/main springs: check shackle bolts and shifted leaf.",
+        "13. Belly plate/radiator guards: securely mounted and free from debris.",
+        "14. Final drive/transmission/differential: check for dripping/leaks.",
+        "15. Sprocket and idlers: no cracked spokes; sprocket teeth not sharp; no welds.",
+        "16. Tracks and rollers: no broken pads; no loose rollers; no broken flanges.",
+        "17. Dozer and assembly: no missing trunnion bolts; no cracks.",
+        "18. Rear hitch (drawbar): serviceable and safe.",
+        "19. Body and cab condition: document dents/damage.",
+        "20. Equipment cleanliness: free of flammable materials, noxious weeds, and invasive species.",
+        "21. Hydraulic attachments: operate smoothly; cylinders hold extension; hoses/lines/pumps not excessively worn and no leaks.",
+        "22. Backup or travel alarm: minimum 87 dB.",
+        "23. Oil level and condition: full and clean."
+      ],
+      attach: [
+        "1. No missing/broken components; no loose hardware.",
+        "2. Sufficient fluid levels (oil, coolant, etc.).",
+        "3. Cutting bar: straight; chain in good condition.",
+        "4. Cutting teeth: sharp; in good repair.",
+        "5. Pump: builds pressure; no water or oil leaks.",
+        "6. Engine starts, idles, and shuts off with switch."
+      ],
+      transport: [
+        "1. DOT/CVSA inspection within last 12 months (if required).",
+        "2. Gauges and lights: mounted and function properly.",
+        "3. Seat belts: operate properly for each seating position.",
+        "4. Glass and mirrors: no cracks in vision area.",
+        "5. Wipers/washer/horn operate properly.",
+        "6. Clutch pedal: proper adjustment (if applicable).",
+        "7. Cooling system: full, free of leaks and damage.",
+        "8. Fluid levels and condition: full and clean.",
+        "9. Battery: check for corrosion, loose terminals, and hold-downs.",
+        "10. Fuel system: free of leaks and damage.",
+        "11. Electrical system: alternator and starter operate properly.",
+        "12. Engine running: check oil pressure, knocks, and leaks.",
+        "13. Transmission: check for leaks.",
+        "14. Steering components: tight, free of play.",
+        "15. Brakes: not damaged, not excessively worn, properly adjusted.",
+        "16. 4-wheel drive: check transfer case and leaks (if applicable).",
+        "17. Driveline U-joints: check for looseness.",
+        "18. Suspension systems: springs, shocks, and related components serviceable.",
+        "19. Differential(s): check for leaks.",
+        "20. Exhaust system: no leaks under cab or before turbo.",
+        "21. Frame condition; body/bed properly attached.",
+        "22. Tires/wheels (including spare and changing equipment): correct load rating; sufficient tread; no major damage.",
+        "23. Body and interior condition: describe and locate damage.",
+        "24. Emergency equipment required (fire extinguisher/spare fuses/reflectors).",
+        "25. Operator(s) properly licensed."
+      ]
+    },
+    es: {
+      heavy: [
+        "1. ROPS (sistema de protección contra vuelcos): sistema aprobado por el fabricante fijado al bastidor; incluye cinturones de seguridad.",
+        "2. Indicadores y luces: instalados y funcionan correctamente.",
+        "3. Batería: revisar corrosión, terminales flojas y sujeción.",
+        "4. Motor en marcha: revisar presión de aceite, ruidos anormales y fugas.",
+        "5. Protectores, deflectores y pantallas de seguridad (vidrio).",
+        "6. Componentes de dirección: firmes y sin juego.",
+        "7. Frenos: sin daño, sin desgaste excesivo y con ajuste correcto.",
+        "8. Sistema de escape: con apagachispas calificado por USFS, a menos que sea turbo.",
+        "9. Sistema de combustible: sin fugas y sin daño.",
+        "10. Sistema de enfriamiento: lleno, sin fugas y sin daño.",
+        "11. Ventilador y correas: tensión adecuada; sin deshilachado ni grietas.",
+        "12. Soportes del motor/barra ecualizadora/resortes: revisar pernos y hojas desplazadas.",
+        "13. Placa inferior y protectores del radiador: bien sujetos y sin residuos.",
+        "14. Mando final/transmisión/diferencial: revisar goteo o fugas.",
+        "15. Piñón y ruedas guía: sin radios agrietados; dientes no afilados; sin soldaduras.",
+        "16. Orugas y rodillos: sin zapatas rotas; rodillos firmes; sin pestañas rotas.",
+        "17. Hoja topadora y conjunto: sin pernos faltantes; sin grietas.",
+        "18. Enganche trasero (barra de tiro): en condiciones y seguro.",
+        "19. Condición de carrocería y cabina: documentar abolladuras/daños.",
+        "20. Limpieza del equipo: sin material inflamable, malezas nocivas ni especies invasoras.",
+        "21. Accesorios hidráulicos: operación suave; cilindros sostienen extensión; mangueras/líneas/bombas sin desgaste excesivo y sin fugas.",
+        "22. Alarma de reversa o de desplazamiento: mínimo 87 dB.",
+        "23. Nivel y condición del aceite: lleno y limpio."
+      ],
+      attach: [
+        "1. Sin componentes faltantes/rotos; sin tornillería floja.",
+        "2. Niveles de fluidos suficientes (aceite, refrigerante, etc.).",
+        "3. Barra de corte: recta; cadena en buen estado.",
+        "4. Dientes de corte: afilados y en buen estado.",
+        "5. Bomba: genera presión; sin fugas de agua ni aceite.",
+        "6. El motor enciende, mantiene ralentí y se apaga con el interruptor."
+      ],
+      transport: [
+        "1. Inspección DOT/CVSA dentro de los últimos 12 meses (si aplica).",
+        "2. Indicadores y luces: instalados y funcionan correctamente.",
+        "3. Cinturones de seguridad: funcionan en cada asiento.",
+        "4. Vidrios y espejos: sin grietas en el área de visión.",
+        "5. Limpiaparabrisas/lavador/bocina funcionan correctamente.",
+        "6. Pedal de embrague: ajuste correcto (si aplica).",
+        "7. Sistema de enfriamiento: lleno, sin fugas y sin daño.",
+        "8. Niveles y condición de fluidos: llenos y limpios.",
+        "9. Batería: revisar corrosión, terminales flojas y sujeción.",
+        "10. Sistema de combustible: sin fugas y sin daño.",
+        "11. Sistema eléctrico: alternador y motor de arranque funcionan.",
+        "12. Motor en marcha: revisar presión de aceite, ruidos anormales y fugas.",
+        "13. Transmisión: revisar fugas.",
+        "14. Componentes de dirección: firmes y sin juego.",
+        "15. Frenos: sin daño, sin desgaste excesivo y con ajuste correcto.",
+        "16. Tracción 4x4: revisar caja de transferencia y fugas (si aplica).",
+        "17. Crucetas (U-joints) del eje: revisar holguras.",
+        "18. Suspensión: resortes, amortiguadores y componentes en condiciones.",
+        "19. Diferencial(es): revisar fugas.",
+        "20. Sistema de escape: sin fugas debajo de la cabina o antes del turbo.",
+        "21. Bastidor en buen estado; carrocería/caja bien sujeta.",
+        "22. Llantas/ruedas (incluye refacción y equipo para cambio): capacidad de carga correcta; dibujo suficiente; sin daño mayor.",
+        "23. Condición de carrocería e interior: describir y ubicar daños.",
+        "24. Equipo de emergencia requerido (extintor/fusibles de repuesto/triángulos).",
+        "25. Operador(es) con licencia adecuada."
+      ]
+    }
   };
 
-  /* -------------------- Language + render -------------------- */
   let currentLang = "en";
 
   function applyLang(lang){
@@ -797,13 +782,14 @@
       if (dict[key]) el.setAttribute("placeholder", dict[key]);
     });
 
-    // Re-render checklist text in selected language
-    renderAllLists();
+    document.querySelectorAll("[data-i18n-yn]").forEach(el => {
+      const key = el.getAttribute("data-i18n-yn");
+      if (dict[key]) el.textContent = dict[key];
+    });
 
-    // Update sticky banner text per current DNO state
+    renderAllChecklists();     // this is the key fix: re-render items in selected language
     updateDoNotOperateUI();
 
-    // Toggle buttons
     const enBtn = document.getElementById("langEn");
     const esBtn = document.getElementById("langEs");
     if (currentLang === "es") {
@@ -819,61 +805,55 @@
     try { localStorage.setItem("gjhh_lang", currentLang); } catch(e) {}
   }
 
-  function getYesNoLabels(){
+  function renderYesNoNA(containerId, items, prefix) {
     const dict = I18N[currentLang];
-    return {
-      yes: dict.yes,
-      no: dict.no,
-      na: dict.na
-    };
-  }
-
-  function renderList(containerId, items, prefix) {
     const root = document.getElementById(containerId);
-    const labels = getYesNoLabels();
     root.innerHTML = "";
 
-    items.forEach((obj, idx) => {
+    items.forEach((t, idx) => {
       const key = `${prefix}_${idx+1}`;
-      const text = (obj[currentLang] || obj.en || "").trim();
-
       const el = document.createElement("div");
       el.className = "item";
       el.innerHTML = `
-        <div class="desc">${escapeHtml(text)}</div>
-        <div class="yn" role="group" aria-label="${escapeAttr(text)}">
-          <label class="ynlabel"><input type="radio" name="${key}" value="Yes"> ${escapeHtml(labels.yes)}</label>
-          <label class="ynlabel"><input type="radio" name="${key}" value="No"> ${escapeHtml(labels.no)}</label>
-          <label class="ynlabel"><input type="radio" name="${key}" value="" checked> ${escapeHtml(labels.na)}</label>
+        <div class="desc">${t}</div>
+        <div class="yn" role="group" aria-label="${t}">
+          <label class="ynlabel">
+            <input type="radio" name="${key}" value="Yes">
+            <span data-i18n-yn="yes">${dict.yes}</span>
+          </label>
+          <label class="ynlabel">
+            <input type="radio" name="${key}" value="No">
+            <span data-i18n-yn="no">${dict.no}</span>
+          </label>
+          <label class="ynlabel">
+            <input type="radio" name="${key}" value="" checked>
+            <span data-i18n-yn="na">${dict.na}</span>
+          </label>
         </div>
       `;
       root.appendChild(el);
     });
   }
 
-  function renderAllLists(){
-    // NOTE: This will reset selections to default N/A on language change.
-    // If you want selections preserved across language toggles, say the word and I’ll add it.
-    renderList("heavyItems", CHECKLIST.heavy, "heavy");
-    renderList("attachItems", CHECKLIST.attach, "attach");
-    renderList("transportItems", CHECKLIST.transport, "transport");
+  function renderAllChecklists(){
+    renderYesNoNA("heavyItems", ITEMS[currentLang].heavy, "heavy");
+    renderYesNoNA("attachItems", ITEMS[currentLang].attach, "attach");
+    renderYesNoNA("transportItems", ITEMS[currentLang].transport, "transport");
   }
 
-  function escapeHtml(str){
-    return String(str)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-  function escapeAttr(str){
-    return escapeHtml(str).replaceAll("\n"," ");
+  function getValue(name) {
+    const el = document.querySelector(`[name="${name}"]`);
+    return el ? (el.value || "").trim() : "";
   }
 
-  /* -------------------- DNO logic + validation -------------------- */
+  function getRadioVal(groupName) {
+    const sel = document.querySelector(`input[name="${groupName}"]:checked`);
+    return sel ? sel.value : "";
+  }
+
   function isDoNotOperate() {
-    return !!document.querySelector('input[type="radio"][value="No"]:checked');
+    const noChecked = document.querySelector('input[type="radio"][value="No"]:checked');
+    return !!noChecked;
   }
 
   function showRemarksError() {
@@ -916,7 +896,9 @@
   }
 
   function validateBeforeSubmit() {
-    if (!isDoNotOperate()) return true;
+    const dno = isDoNotOperate();
+    if (!dno) return true;
+
     const remarksVal = (document.getElementById("remarks").value || "").trim();
     if (!remarksVal) {
       showRemarksError();
@@ -935,39 +917,24 @@
     if (e.target && e.target.id === "remarks") clearRemarksError();
   });
 
-  /* -------------------- Email -------------------- */
-  function getValue(name) {
-    const el = document.querySelector(`[name="${name}"]`);
-    return el ? (el.value || "").trim() : "";
-  }
-
-  function getRadioVal(groupName) {
-    const sel = document.querySelector(`input[name="${groupName}"]:checked`);
-    return sel ? sel.value : "";
-  }
-
   function collectData() {
+    // Always keep email body in English for office consistency
+    // Checklist values remain Yes/No/N/A regardless of UI language
     return {
       equipmentNo: getValue("equipmentNo"),
       preUseStatus: getValue("preUseStatus"),
       preUseMilesHrs: getValue("preUseMilesHrs"),
       preUseDate: getValue("preUseDate"),
       preUseTime: getValue("preUseTime"),
-
-      // For management email, keep the canonical EN question text
-      sectionI: CHECKLIST.heavy.map((o, i) => ({ item: o.en, val: getRadioVal(`heavy_${i+1}`) })),
+      sectionI: ITEMS.en.heavy.map((t, i) => ({ item: t, val: getRadioVal(`heavy_${i+1}`) })),
       sectionIISpecify: getValue("sectionIISpecify"),
-      sectionII: CHECKLIST.attach.map((o, i) => ({ item: o.en, val: getRadioVal(`attach_${i+1}`) })),
-      sectionIV: CHECKLIST.transport.map((o, i) => ({ item: o.en, val: getRadioVal(`transport_${i+1}`) })),
-
+      sectionII: ITEMS.en.attach.map((t, i) => ({ item: t, val: getRadioVal(`attach_${i+1}`) })),
       operatorName: getValue("operatorName"),
       operatorSignature: getValue("operatorSignature"),
       operatorDate: getValue("operatorDate"),
-
+      sectionIV: ITEMS.en.transport.map((t, i) => ({ item: t, val: getRadioVal(`transport_${i+1}`) })),
       remarks: getValue("remarks"),
-
       releaseNoDamage: getValue("releaseNoDamage"),
-      releaseMilesHrs: getValue("releaseMilesHrs"),
       releaseDate: getValue("releaseDate"),
       releaseTime: getValue("releaseTime"),
       releaseOperatorName: getValue("releaseOperatorName"),
@@ -1009,7 +976,6 @@
       "",
       "RELEASE",
       `No Damage/No Claim: ${d.releaseNoDamage}`,
-      `Miles/Hrs: ${d.releaseMilesHrs}`,
       `Date: ${d.releaseDate}`,
       `Time: ${d.releaseTime}`,
       `Operator Printed Name: ${d.releaseOperatorName}`,
@@ -1019,7 +985,8 @@
 
   function subjectFor(dno, equipmentNo) {
     const eq = equipmentNo ? equipmentNo : "(Not Provided)";
-    return dno ? `DO NOT OPERATE - Equipment No. ${eq}` : `Pre-Use Inspection - Equipment No. ${eq}`;
+    if (dno) return `DO NOT OPERATE - Equipment No. ${eq}`;
+    return `Pre-Use Inspection - Equipment No. ${eq}`;
   }
 
   function submitEmail() {
@@ -1043,7 +1010,6 @@
     window.location.href = mailto;
   }
 
-  /* -------------------- Time stamps -------------------- */
   function stampNow() {
     const now = new Date();
     const yyyy = now.getFullYear();
@@ -1067,15 +1033,12 @@
     set("releaseTime", timeVal);
   }
 
-  /* -------------------- Wire up language toggle -------------------- */
   document.getElementById("langEn").addEventListener("click", () => applyLang("en"));
   document.getElementById("langEs").addEventListener("click", () => applyLang("es"));
 
   (function init(){
     let saved = "en";
     try { saved = localStorage.getItem("gjhh_lang") || "en"; } catch(e) {}
-
-    renderAllLists();
     applyLang(saved);
     updateDoNotOperateUI();
   })();
